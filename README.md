@@ -1,6 +1,6 @@
 # 💍 Natacha & Mauricio — Site de Casamento
 
-Site de casamento completo, moderno e emocional. Construído com **Next.js 16**, **TypeScript**, **TailwindCSS v4**, **Framer Motion** e **Firebase**.
+Site de casamento completo, moderno e emocional. Construído com **Next.js 16**, **TypeScript**, **TailwindCSS v4**, **Framer Motion**, **Firebase** e **Mercado Pago**.
 
 ---
 
@@ -9,7 +9,7 @@ Site de casamento completo, moderno e emocional. Construído com **Next.js 16**,
 - **Hero** cinematográfico com countdown em tempo real
 - **Nossa História** — storytelling com timeline e parallax
 - **Manual dos Convidados** — cards elegantes com regras
-- **Lista de Presentes** — grid com filtros, busca e PIX
+- **Lista de Presentes** — mosaico com filtros, busca, checkout via Mercado Pago e PIX
 - **Mural de Recados** — tempo real via Firestore
 - **Confirmar Presença** — busca fuzzy na lista de convidados
 - **Player de música** flutuante com mute/unmute
@@ -35,7 +35,7 @@ npm install
 cp .env.example .env.local
 ```
 
-Preencha o `.env.local` com suas credenciais do Firebase (veja seção abaixo).
+Preencha o `.env.local` com suas credenciais do Firebase e do Mercado Pago (veja seções abaixo).
 
 ### 3. Adicione a música
 
@@ -64,16 +64,12 @@ Acesse [console.firebase.google.com](https://console.firebase.google.com) e crie
 - No menu lateral: **Firestore Database** → **Criar banco de dados**
 - Escolha modo de teste (para desenvolvimento) ou configure as regras de segurança.
 
-### 3. Ative o Storage (para fotos futuras)
-
-- No menu lateral: **Storage** → **Começar**
-
-### 4. Registre um app Web
+### 3. Registre um app Web
 
 - Clique no ícone `</>` na página inicial do projeto
 - Copie o objeto `firebaseConfig`
 
-### 5. Preencha o `.env.local`
+### 4. Preencha o `.env.local`
 
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=AIza...
@@ -82,11 +78,9 @@ NEXT_PUBLIC_FIREBASE_PROJECT_ID=seu-projeto
 NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=seu-projeto.appspot.com
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=123456789
 NEXT_PUBLIC_FIREBASE_APP_ID=1:123:web:abc123
-
-NEXT_PUBLIC_PIX_KEY=seu@email.com
 ```
 
-### 6. Regras de segurança do Firestore (mínimo recomendado)
+### 5. Regras de segurança do Firestore (mínimo recomendado)
 
 ```javascript
 rules_version = '2';
@@ -106,6 +100,56 @@ service cloud.firestore {
 }
 ```
 
+> Firebase é opcional. Sem as variáveis configuradas, o mural de recados e o RSVP funcionam em modo degradado (sem persistência).
+
+---
+
+## 💳 Como configurar o Mercado Pago
+
+O site usa **Checkout Pro** do Mercado Pago — sem expor credenciais no frontend.
+
+### 1. Crie uma conta de desenvolvedor
+
+Acesse [mercadopago.com.br/developers](https://www.mercadopago.com.br/developers) e faça login com sua conta do Mercado Pago.
+
+### 2. Crie um aplicativo
+
+- Vá em **Seus aplicativos** → **Criar aplicativo**
+- Tipo: **Checkout Pro**
+- Anote o **Public Key** e o **Access Token** (use os de **produção** para o site real, ou os de **teste** para desenvolvimento)
+
+### 3. Preencha o `.env.local`
+
+```env
+# Mercado Pago
+NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY=APP_USR-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+MERCADO_PAGO_ACCESS_TOKEN=APP_USR-0000000000000000-000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-000000000
+
+# URL do site (sem barra no final)
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Chave PIX para cópia manual
+NEXT_PUBLIC_PIX_KEY=seu@email.com
+```
+
+> Em produção, substitua `NEXT_PUBLIC_SITE_URL` pela URL do seu domínio (ex: `https://natachaemauricio.com.br`).
+
+### 4. Como funciona
+
+| Ação | Fluxo |
+|------|-------|
+| Convidado clica "Dar" em um presente | `POST /api/create-preference` com `{ type: 'gift', id }` → servidor busca preço real em `gifts.json` → cria preferência no MP → redireciona para checkout |
+| Convidado insere valor e clica "Ir para o Checkout" na seção PIX | `POST /api/create-preference` com `{ type: 'contribution', amount }` → servidor valida R$1–R$50.000 → cria preferência → redireciona |
+| Pagamento aprovado | MP redireciona para `/pagamento/sucesso` |
+| Pagamento recusado | MP redireciona para `/pagamento/erro` |
+| PIX aguardando confirmação | MP redireciona para `/pagamento/pendente` |
+
+> O preço dos presentes é sempre lido do servidor (`mocks/gifts.json`) — nunca do payload do cliente.
+
+### 5. Testando em desenvolvimento
+
+Use as credenciais de **teste** do painel do Mercado Pago. Você pode simular pagamentos com os cartões de teste fornecidos pela documentação do MP.
+
 ---
 
 ## ☁️ Deploy na Vercel
@@ -117,41 +161,31 @@ vercel
 
 Ou conecte o repositório diretamente em [vercel.com](https://vercel.com).
 
-**Configure as variáveis de ambiente** na dashboard da Vercel (Settings → Environment Variables).
+### Variáveis de ambiente na Vercel
 
----
+Na dashboard do projeto: **Settings → Environment Variables**. Adicione todas as variáveis do `.env.local`:
 
-## 💳 Integração futura com Mercado Pago
+| Variável | Onde obter |
+|----------|-----------|
+| `NEXT_PUBLIC_FIREBASE_*` | Console Firebase → Configurações do projeto |
+| `MERCADO_PAGO_ACCESS_TOKEN` | Painel MP Developers → Credenciais de produção |
+| `NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY` | Painel MP Developers → Credenciais de produção |
+| `NEXT_PUBLIC_SITE_URL` | URL do seu domínio na Vercel (ex: `https://natachaemauricio.com.br`) |
+| `NEXT_PUBLIC_PIX_KEY` | Sua chave PIX (CPF, email, celular ou chave aleatória) |
 
-O componente `PIXSection` e os cards de presentes já têm estrutura preparada.
-
-Para integrar:
-
-1. Crie uma conta no [Mercado Pago Developers](https://www.mercadopago.com.br/developers)
-2. Adicione ao `.env.local`:
-   ```env
-   NEXT_PUBLIC_MP_PUBLIC_KEY=APP_USR-...
-   MP_ACCESS_TOKEN=APP_USR-...
-   ```
-3. Crie um Route Handler em `app/api/create-preference/route.ts`
-4. Use o SDK `@mercadopago/sdk-react` nos componentes de checkout
+> Após adicionar as variáveis, faça um novo deploy para que entrem em vigor.
 
 ---
 
 ## 📸 Como adicionar fotos reais do casal
 
-As imagens do Unsplash são temporárias. Para substituir:
+As imagens em `public/images/` são temporárias. Para substituir:
 
-1. Faça upload das fotos no **Firebase Storage** (ou use qualquer CDN)
-2. Substitua as URLs `https://images.unsplash.com/...` nos componentes:
-   - `components/home/Hero.tsx` — foto principal do hero
-   - `components/home/StoryCards.tsx` — fotos dos cards
+1. Coloque as fotos na pasta `public/images/`
+2. Substitua as referências nos componentes:
+   - `components/home/Hero.tsx` — foto principal do hero (`book2.png`)
+   - `components/home/HistoriaTeaser.tsx` — foto editorial (`book1.png`)
    - `app/historia/page.tsx` — fotos da timeline
-3. Use o componente `<Image>` do Next.js para otimização automática:
-   ```tsx
-   import Image from 'next/image'
-   <Image src="/foto-casal.jpg" alt="Natacha e Mauricio" fill className="object-cover" />
-   ```
 
 ---
 
@@ -193,12 +227,14 @@ Edite o arquivo `mocks/gifts.json`:
     "price": 250,
     "image": "https://url-da-imagem.com/foto.jpg",
     "category": "Cozinha",
-    "purchased": false
+    "featured": false
   }
 ]
 ```
 
-Categorias disponíveis: `Cozinha`, `Quarto`, `Sala`, `Banheiro`, `Lazer`, `Viagem`, `Surpresa`.
+Categorias disponíveis: `Lua de Mel`, `Cozinha`, `Quarto`, `Sala`, `Banheiro`, `Lazer`.
+
+Presentes com `"featured": true` aparecem com imagem maior no mosaico.
 
 ---
 
@@ -207,23 +243,34 @@ Categorias disponíveis: `Cozinha`, `Quarto`, `Sala`, `Banheiro`, `Lazer`, `Viag
 ```
 app/
 ├── layout.tsx
-├── page.tsx                   # Home (/)
+├── page.tsx                        # Home (/)
 ├── historia/page.tsx
 ├── manual/page.tsx
 ├── presentes/page.tsx
 ├── recados/page.tsx
-└── confirmar-presenca/page.tsx
+├── confirmar-presenca/page.tsx
+├── api/
+│   ├── create-preference/route.ts  # Cria preferência no Mercado Pago
+│   └── webhook/route.ts            # Placeholder para notificações MP
+└── pagamento/
+    ├── sucesso/page.tsx
+    ├── erro/page.tsx
+    └── pendente/page.tsx
 
 components/
 ├── layout/      # Navbar, Footer, LoadingScreen, BackToTop
-├── ui/          # AnimatedSection, SectionTitle, Particles
-├── home/        # Hero, Countdown, StoryCards, LocationSection
+├── ui/          # AnimatedSection, SectionTitle, Particles, PageHero
+├── home/        # Hero, HistoriaTeaser, StoryCards, LocationSection
 ├── audio/       # MusicPlayer
 ├── presentes/   # GiftsClient, PIXSection
 ├── recados/     # MessageWall
 └── confirmar-presenca/ # RSVPClient
 
-lib/             # firebase.ts, firestore.ts
+lib/
+├── firebase.ts
+├── firestore.ts
+└── mercadopago.ts   # Client MP + createPreference()
+
 hooks/           # useCountdown.ts, useAudio.ts
 mocks/           # guests.json, gifts.json
 types/           # index.ts
