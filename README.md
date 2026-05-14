@@ -86,21 +86,24 @@ NEXT_PUBLIC_FIREBASE_APP_ID=1:123:web:abc123
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Mural de recados
     match /messages/{doc} {
       allow read: if true;
       allow create: if request.resource.data.name is string
                     && request.resource.data.text is string;
     }
-    match /confirmations/{doc} {
-      allow read: if false;
-      allow create: if request.resource.data.guestName is string
-                    && request.resource.data.email is string;
+    // Convidados — seed + RSVP + painel dos noivos
+    match /guests/{guestId} {
+      allow read: if true;
+      allow write: if true;
     }
   }
 }
 ```
 
 > Firebase é opcional. Sem as variáveis configuradas, o mural de recados e o RSVP funcionam em modo degradado (sem persistência).
+
+> A coleção `guests` precisa de `write: true` para o script `seed:guests` e para os convidados confirmarem presença via RSVP.
 
 ---
 
@@ -174,6 +177,45 @@ Na dashboard do projeto: **Settings → Environment Variables**. Adicione todas 
 | `NEXT_PUBLIC_PIX_KEY` | Sua chave PIX (CPF, email, celular ou chave aleatória) |
 
 > Após adicionar as variáveis, faça um novo deploy para que entrem em vigor.
+
+---
+
+## 🌸 Convidados e painel dos noivos
+
+### Popular convidados no Firestore (seed)
+
+Antes de usar o sistema de confirmação de presença, os convidados precisam existir no Firestore.
+
+```bash
+npm run seed:guests
+```
+
+O script lê `mocks/guests.json` e cria um documento na coleção `guests` para cada convidado. Documentos já existentes são ignorados (sem duplicidade).
+
+### Limpar todas as coleções do Firestore
+
+```bash
+npm run firestore:clear
+```
+
+Apaga todos os documentos das coleções `guests`, `messages`, `confirmations` e `gifts`. **Irreversível** — o script pede confirmação antes de executar.
+
+### Adicionar ou editar convidados
+
+Edite `mocks/guests.json` e rode `npm run seed:guests` novamente. Apenas os convidados novos serão criados — os existentes não são alterados.
+
+### Painel dos noivos
+
+Acesse `/noivos` no navegador. Você verá um modal de senha elegante.
+
+- **Senha:** `135426`
+- O painel mostra estatísticas em tempo real (total, confirmados, pendentes, taxa)
+- Countdown até o casamento
+- Lista completa de convidados com busca e filtros
+- Ações: confirmar, remover confirmação, editar telefone e quantidade de pessoas
+- Tudo sincronizado com o Firestore em tempo real
+
+> O acesso ao `/noivos` não é listado na navbar — é para uso interno dos noivos.
 
 ---
 

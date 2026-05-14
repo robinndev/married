@@ -1,16 +1,12 @@
 export interface Guest {
   id: string
   name: string
-}
-
-export interface Confirmation {
-  id?: string
-  guestId: string
-  guestName: string
-  email: string
+  invitedAt: string
+  confirmed?: boolean
+  phone?: string
   message?: string
-  totalPeople: number
-  confirmedAt: Date | string
+  totalGuests?: number
+  confirmedAt?: string | null
 }
 
 export interface Message {
