@@ -1,26 +1,111 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── SUNSET PALETTE ─────────────────────────────────────────── */
+@theme {
+  /* Sunset golds & oranges */
+  --color-s-gold:    #C8924A;   /* main accent — warm amber gold   */
+  --color-s-amber:   #D4A05A;   /* lighter amber                   */
+  --color-s-orange:  #C4673A;   /* burnt sienna / deep orange      */
+  --color-s-terra:   #B55E4E;   /* sophisticated terracotta        */
+  --color-s-rose:    #C47268;   /* burnt rose                      */
+  --color-s-sand:    #E2C09A;   /* golden sand / nude warm         */
+  --color-s-pale:    #F0DBBE;   /* palest sand — light highlights  */
+
+  /* Backgrounds */
+  --color-s-cream:   #FBF2E8;   /* body background (warm cream)    */
+  --color-s-warm:    #F4E5D0;   /* secondary section bg            */
+  --color-s-section: #EDD9C0;   /* third section bg                */
+
+  /* Darks */
+  --color-s-dark:    #1A100A;   /* very deep warm dark             */
+  --color-s-deep:    #110B06;   /* deepest                         */
+  --color-s-mid:     #2E1A0E;   /* medium dark sections            */
+
+  /* Text */
+  --color-s-charcoal:#2A1A0F;   /* main text (warm dark)           */
+  --color-s-muted:   #8A6A50;   /* muted text                      */
+  --color-s-light:   #BFA080;   /* very light muted                */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ── BASE ───────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FBF2E8;
+  color: #2A1A0F;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #E2C09A;
+  color: #1A100A;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #F4E5D0; }
+::-webkit-scrollbar-thumb { background: #C8924A; border-radius: 99px; }
+
+/* ── GLASS (WARM) ───────────────────────────────────────────── */
+.glass {
+  background: rgba(251, 242, 232, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(200, 146, 74, 0.22);
+}
+
+.glass-dark {
+  background: rgba(26, 16, 10, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(200, 146, 74, 0.2);
+}
+
+/* ── OVERLAYS ───────────────────────────────────────────────── */
+.cinematic-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 16, 10, 0.28) 0%,
+    rgba(196, 103, 58, 0.18) 38%,
+    rgba(26, 16, 10, 0.62) 72%,
+    rgba(26, 16, 10, 0.88) 100%
+  );
+}
+
+.nav-top-gradient {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, transparent 100%);
+}
+
+/* ── SUNSET GLOW ─────────────────────────────────────────────── */
+.sunset-glow {
+  box-shadow:
+    0 0 60px rgba(200, 146, 74, 0.14),
+    0 0 120px rgba(196, 103, 58, 0.08);
+}
+
+.card-glow {
+  box-shadow:
+    0 4px 24px rgba(26, 16, 10, 0.08),
+    0 0 0 1px rgba(200, 146, 74, 0.12);
+}
+
+.card-glow:hover {
+  box-shadow:
+    0 12px 48px rgba(200, 146, 74, 0.18),
+    0 0 0 1px rgba(200, 146, 74, 0.28);
+}
+
+/* ── TEXT GRADIENT ───────────────────────────────────────────── */
+.text-sunset {
+  background: linear-gradient(135deg, #C8924A 0%, #E2C09A 45%, #C4673A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── DIVIDER ─────────────────────────────────────────────────── */
+.divider-sunset {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #C8924A 40%, #C4673A 60%, transparent);
 }

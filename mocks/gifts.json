@@ -1,0 +1,186 @@
+[
+  {
+    "id": "p001",
+    "name": "Jogo de Panelas Premium",
+    "description": "Conjunto de 5 panelas antiaderentes de alta qualidade, perfeito para a nova vida a dois.",
+    "price": 450,
+    "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80",
+    "category": "Cozinha",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "p002",
+    "name": "Cafeteira Italiana Moka",
+    "description": "Cafeteira clássica de alumínio para 6 xícaras, para as manhãs cheias de amor.",
+    "price": 180,
+    "image": "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80",
+    "category": "Cozinha",
+    "purchased": false
+  },
+  {
+    "id": "p003",
+    "name": "Jogo de Cama Queen 400 fios",
+    "description": "Lençol, fronhas e capa de almofada em algodão egípcio, para noites de muito sonho.",
+    "price": 380,
+    "image": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=80",
+    "category": "Quarto",
+    "purchased": false
+  },
+  {
+    "id": "p004",
+    "name": "Conjunto de Toalhas Felpudas",
+    "description": "Kit com 4 toalhas de banho e 4 de rosto, algodão 100% premium.",
+    "price": 220,
+    "image": "https://images.unsplash.com/photo-1563178406-4cdc2923acbc?w=400&q=80",
+    "category": "Banheiro",
+    "purchased": false
+  },
+  {
+    "id": "p005",
+    "name": "Mixer Vertical Profissional",
+    "description": "Mixer com 12 velocidades, copo medidor e suporte inox. Ideal para smoothies e sopas.",
+    "price": 290,
+    "image": "https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400&q=80",
+    "category": "Cozinha",
+    "purchased": false
+  },
+  {
+    "id": "p006",
+    "name": "Quadro Decorativo Personalizado",
+    "description": "Arte em canvas com frase especial do casal, formato 60x40cm com moldura elegante.",
+    "price": 160,
+    "image": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400&q=80",
+    "category": "Sala",
+    "purchased": false
+  },
+  {
+    "id": "p007",
+    "name": "Churrasqueira Elétrica Premium",
+    "description": "Churrasqueira de mesa com grelha antiaderente e controle de temperatura.",
+    "price": 340,
+    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
+    "id": "p008",
+    "name": "Kit Vinho & Degustação",
+    "description": "Conjunto com abridor elétrico, aerador, termômetro, rolhas e 2 taças de cristal.",
+    "price": 260,
+    "image": "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
+    "id": "p009",
+    "name": "Travesseiro Tempur Premium",
+    "description": "Par de travesseiros ergonômicos em espuma de memória, para o descanso mais gostoso.",
+    "price": 420,
+    "image": "https://images.unsplash.com/photo-1586105251261-72a756497a11?w=400&q=80",
+    "category": "Quarto",
+    "purchased": false
+  },
+  {
+    "id": "p010",
+    "name": "Air Fryer 5L Digital",
+    "description": "Fritadeira sem óleo com painel digital, 8 funções e capacidade de 5 litros.",
+    "price": 480,
+    "image": "https://images.unsplash.com/photo-1648720687533-8c1d52ea0608?w=600&q=80",
+    "category": "Cozinha",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "p011",
+    "name": "Escova de Dentes Elétrica Couple",
+    "description": "Kit com 2 escovas elétricas sônicas com 5 modos de limpeza e estojo de viagem.",
+    "price": 320,
+    "image": "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&q=80",
+    "category": "Banheiro",
+    "purchased": false
+  },
+  {
+    "id": "p012",
+    "name": "Planta de Interior — Monstera",
+    "description": "Monstera deliciosa em vaso decorativo de cerâmica. Um toque verde para o novo lar.",
+    "price": 150,
+    "image": "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&q=80",
+    "category": "Sala",
+    "purchased": false
+  },
+  {
+    "id": "p013",
+    "name": "Kit Fondue Completo",
+    "description": "Conjunto de fondue em ferro fundido com rechaud, garfinhos e manual de receitas.",
+    "price": 280,
+    "image": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
+    "id": "p014",
+    "name": "Luminária de Mesa Articulada",
+    "description": "Luminária LED com braço articulado, regulagem de intensidade e temperatura de cor.",
+    "price": 195,
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400&q=80",
+    "category": "Quarto",
+    "purchased": false
+  },
+  {
+    "id": "p015",
+    "name": "Secador de Cabelo Profissional",
+    "description": "Secador com motor DC, difusor e 3 temperaturas. Ideal para o casal.",
+    "price": 240,
+    "image": "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&q=80",
+    "category": "Banheiro",
+    "purchased": false
+  },
+  {
+    "id": "p016",
+    "name": "Almofadas Decorativas Premium",
+    "description": "Kit com 4 almofadas em veludo com enchimento de fibra siliconada. Cores neutras.",
+    "price": 200,
+    "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=80",
+    "category": "Sala",
+    "purchased": false
+  },
+  {
+    "id": "p017",
+    "name": "Máquina de Café Expresso",
+    "description": "Cafeteira automática com moedor integrado, vaporizador de leite e painel touch. O ritual perfeito para as manhãs do casal.",
+    "price": 890,
+    "image": "https://images.unsplash.com/photo-1520970014086-2208d157c9e2?w=600&q=80",
+    "category": "Cozinha",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "p018",
+    "name": "Kit Spa em Casa",
+    "description": "Conjunto com óleos essenciais, sais de banho, esfoliante e velas aromáticas.",
+    "price": 185,
+    "image": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=80",
+    "category": "Banheiro",
+    "purchased": false
+  },
+  {
+    "id": "p019",
+    "name": "Relógio de Parede Minimalista",
+    "description": "Relógio silencioso em alumínio escovado, design escandinavo. 40cm de diâmetro.",
+    "price": 175,
+    "image": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&q=80",
+    "category": "Sala",
+    "purchased": false
+  },
+  {
+    "id": "p020",
+    "name": "Voucher Viagem — Surpresa",
+    "description": "Contribua para a lua-de-mel dos noivos. Cada centavo se transforma em memória, aventura e amor ao redor do mundo.",
+    "price": 500,
+    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
+    "category": "Viagem",
+    "purchased": false,
+    "featured": true
+  }
+]
