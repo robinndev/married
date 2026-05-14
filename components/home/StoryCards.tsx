@@ -11,6 +11,7 @@ const cards = [
     description:
       'Da primeira órbita distante ao primeiro beijo na Consolação — amor que o universo ensaiou por anos.',
     src: '/images/book1.png',
+    objectPosition: 'bottom',
   },
   {
     href: '/manual',
@@ -18,6 +19,7 @@ const cards = [
     title: 'Manual do Convidado',
     description: 'Tudo que você precisa saber para aproveitar ao máximo o nosso dia especial.',
     src: '/images/book3.png',
+    objectPosition: 'bottom',
   },
   {
     href: '/presentes',
@@ -25,6 +27,7 @@ const cards = [
     title: 'Presentes',
     description: 'Cada presente é uma forma de fazer parte da construção do nosso lar.',
     src: '/images/book2.png',
+    objectPosition: 'bottom',
   },
   {
     href: '/recados',
@@ -32,6 +35,7 @@ const cards = [
     title: 'Deixe um Recado',
     description: 'Escreva uma mensagem especial que ficará guardada para sempre.',
     src: '/images/book6.png',
+    objectPosition: 'top',
   },
 ]
 
@@ -46,7 +50,7 @@ export default function StoryCards() {
         />
 
         <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {cards.map(({ href, eyebrow, title, description, src }, i) => (
+          {cards.map(({ href, eyebrow, title, description, src, objectPosition }, i) => (
             <AnimatedSection key={href} delay={i * 0.1}>
               <Link
                 href={href}
@@ -59,7 +63,8 @@ export default function StoryCards() {
                     src={src}
                     alt={title}
                     fill
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-108"
+                    className="object-cover transition-transform duration-700 group-hover:scale-108"
+                    style={{ objectPosition }}
                     quality={75}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />

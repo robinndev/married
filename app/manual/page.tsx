@@ -112,6 +112,7 @@ export default function ManualPage() {
         eyebrow="Para os nossos queridos convidados"
         title="Manual dos Convidados"
         subtitle="Algumas dicas e regrinhas para tornar o nosso dia ainda mais especial."
+        objectPosition="bottom"
       />
 
       {/* ── Cards grid ───────────────────────────────────────── */}

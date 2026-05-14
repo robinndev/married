@@ -67,7 +67,7 @@ export default function HistoriaTeaser() {
             src="/images/book1.png"
             alt="Natacha e Mauricio — Nossa História"
             fill
-            className="object-cover object-center"
+            className="object-cover object-bottom"
             quality={82}
             sizes="(max-width: 768px) 100vw, 50vw"
           />

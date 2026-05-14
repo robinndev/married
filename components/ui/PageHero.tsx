@@ -9,6 +9,7 @@ interface Props {
   title: string
   subtitle?: string
   minHeight?: string
+  objectPosition?: string
 }
 
 export default function PageHero({
@@ -17,6 +18,7 @@ export default function PageHero({
   title,
   subtitle,
   minHeight = 'min-h-[58vh]',
+  objectPosition = 'center',
 }: Props) {
   return (
     <section
@@ -28,7 +30,8 @@ export default function PageHero({
           src={src}
           alt=""
           fill
-          className="object-cover object-center"
+          className="object-cover"
+          style={{ objectPosition }}
           priority
           quality={82}
         />

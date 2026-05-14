@@ -19,6 +19,7 @@ export default function HistoriaPage() {
         title="Nossa História"
         subtitle="Dois corpos em órbitas diferentes dentro da mesma galáxia — até que o universo finalmente alinhou tudo."
         minHeight="min-h-[65vh]"
+        objectPosition="bottom"
       />
 
       {/* ── FASE 1: O INÍCIO ──────────────────────────────────── */}
@@ -68,7 +69,7 @@ export default function HistoriaPage() {
                   src="/images/book2.png"
                   alt="Natacha e Mauricio"
                   fill
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-bottom transition-transform duration-700 group-hover:scale-105"
                   quality={80}
                 />
                 <div
@@ -108,7 +109,7 @@ export default function HistoriaPage() {
                   src="/images/book3.png"
                   alt="O gesto das suculentas"
                   fill
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  className="object-cover object-bottom transition-transform duration-700 group-hover:scale-105"
                   quality={78}
                 />
                 <div
@@ -143,7 +144,7 @@ export default function HistoriaPage() {
                     src="/images/book4.png"
                     alt="Natacha e Mauricio"
                     fill
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover object-bottom transition-transform duration-700 group-hover:scale-105"
                     quality={78}
                   />
                   <div
@@ -182,7 +183,7 @@ export default function HistoriaPage() {
             src="/images/book6.png"
             alt="O encontro no carnaval"
             fill
-            className="object-cover object-center"
+            className="object-cover object-top"
             quality={82}
           />
         </div>

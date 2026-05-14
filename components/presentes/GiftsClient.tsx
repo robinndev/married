@@ -77,6 +77,7 @@ export default function GiftsClient() {
         eyebrow="Com amor"
         title="Lista de Presentes"
         subtitle="Cada presente é uma forma carinhosa de fazer parte da construção do nosso lar."
+        objectPosition="bottom"
       />
 
       {/* ── PIX + Lua de Mel callout ──────────────────────────── */}

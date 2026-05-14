@@ -34,7 +34,7 @@ export default function Hero() {
           src="/images/book2.png"
           alt="Natacha e Mauricio"
           fill
-          className="object-cover object-center"
+          className="object-cover object-bottom"
           priority
           quality={88}
         />
