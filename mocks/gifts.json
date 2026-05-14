@@ -1,5 +1,80 @@
 [
   {
+    "id": "lm001",
+    "name": "Passeio de Escuna — Morro de São Paulo",
+    "description": "Uma tarde a bordo navegando pelas águas esverdeadas do litoral baiano, com paradas nas piscinas naturais e praias desertas.",
+    "price": 480,
+    "image": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "lm002",
+    "name": "Jantar Romântico à Beira-Mar",
+    "description": "Uma noite inesquecível com mesa ao ar livre, frutos do mar frescos, vela e som do mar da Bahia ao fundo.",
+    "price": 320,
+    "image": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false
+  },
+  {
+    "id": "lm003",
+    "name": "Snorkeling nas Piscinas Naturais",
+    "description": "Exploração das piscinas naturais de Morro de São Paulo com equipamento de mergulho e guia local.",
+    "price": 260,
+    "image": "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false
+  },
+  {
+    "id": "lm004",
+    "name": "Passeio para Ilha de Boipeba",
+    "description": "Travessia de barco até a paradisíaca Ilha de Boipeba — praias quase intocadas, águas cristalinas e total paz para o casal.",
+    "price": 420,
+    "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "lm005",
+    "name": "Spa para o Casal",
+    "description": "Um dia inteiro de relaxamento com massagem, esfoliação e tratamentos à beira da praia para os noivos.",
+    "price": 550,
+    "image": "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false,
+    "featured": true
+  },
+  {
+    "id": "lm006",
+    "name": "Passeio de Buggy nas Dunas",
+    "description": "Aventura pelas dunas e praias da Bahia de buggy, com paradas para banho e vistas deslumbrantes.",
+    "price": 240,
+    "image": "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false
+  },
+  {
+    "id": "lm007",
+    "name": "Mergulho com Cilindro",
+    "description": "Experiência de mergulho guiado nos recifes de coral da Bahia — para dois, com instrutor e todo o equipamento.",
+    "price": 580,
+    "image": "https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false
+  },
+  {
+    "id": "lm008",
+    "name": "Moqueca Especial para Dois",
+    "description": "Uma experiência gastronômica com moqueca de peixe ou camarão frescos, preparada por cozinheira local, com vista para o mar.",
+    "price": 180,
+    "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&q=80",
+    "category": "Lua de Mel",
+    "purchased": false
+  },
+  {
     "id": "p001",
     "name": "Jogo de Panelas Premium",
     "description": "Conjunto de 5 panelas antiaderentes de alta qualidade, perfeito para a nova vida a dois.",
@@ -56,15 +131,6 @@
   },
   {
     "id": "p007",
-    "name": "Churrasqueira Elétrica Premium",
-    "description": "Churrasqueira de mesa com grelha antiaderente e controle de temperatura.",
-    "price": 340,
-    "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=80",
-    "category": "Lazer",
-    "purchased": false
-  },
-  {
-    "id": "p008",
     "name": "Kit Vinho & Degustação",
     "description": "Conjunto com abridor elétrico, aerador, termômetro, rolhas e 2 taças de cristal.",
     "price": 260,
@@ -73,7 +139,7 @@
     "purchased": false
   },
   {
-    "id": "p009",
+    "id": "p008",
     "name": "Travesseiro Tempur Premium",
     "description": "Par de travesseiros ergonômicos em espuma de memória, para o descanso mais gostoso.",
     "price": 420,
@@ -82,26 +148,16 @@
     "purchased": false
   },
   {
-    "id": "p010",
+    "id": "p009",
     "name": "Air Fryer 5L Digital",
     "description": "Fritadeira sem óleo com painel digital, 8 funções e capacidade de 5 litros.",
     "price": 480,
     "image": "https://images.unsplash.com/photo-1648720687533-8c1d52ea0608?w=600&q=80",
     "category": "Cozinha",
-    "purchased": false,
-    "featured": true
-  },
-  {
-    "id": "p011",
-    "name": "Escova de Dentes Elétrica Couple",
-    "description": "Kit com 2 escovas elétricas sônicas com 5 modos de limpeza e estojo de viagem.",
-    "price": 320,
-    "image": "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?w=400&q=80",
-    "category": "Banheiro",
     "purchased": false
   },
   {
-    "id": "p012",
+    "id": "p010",
     "name": "Planta de Interior — Monstera",
     "description": "Monstera deliciosa em vaso decorativo de cerâmica. Um toque verde para o novo lar.",
     "price": 150,
@@ -110,7 +166,7 @@
     "purchased": false
   },
   {
-    "id": "p013",
+    "id": "p011",
     "name": "Kit Fondue Completo",
     "description": "Conjunto de fondue em ferro fundido com rechaud, garfinhos e manual de receitas.",
     "price": 280,
@@ -119,7 +175,7 @@
     "purchased": false
   },
   {
-    "id": "p014",
+    "id": "p012",
     "name": "Luminária de Mesa Articulada",
     "description": "Luminária LED com braço articulado, regulagem de intensidade e temperatura de cor.",
     "price": 195,
@@ -128,16 +184,7 @@
     "purchased": false
   },
   {
-    "id": "p015",
-    "name": "Secador de Cabelo Profissional",
-    "description": "Secador com motor DC, difusor e 3 temperaturas. Ideal para o casal.",
-    "price": 240,
-    "image": "https://images.unsplash.com/photo-1522338242992-e1a54906a8da?w=400&q=80",
-    "category": "Banheiro",
-    "purchased": false
-  },
-  {
-    "id": "p016",
+    "id": "p013",
     "name": "Almofadas Decorativas Premium",
     "description": "Kit com 4 almofadas em veludo com enchimento de fibra siliconada. Cores neutras.",
     "price": 200,
@@ -146,9 +193,9 @@
     "purchased": false
   },
   {
-    "id": "p017",
+    "id": "p014",
     "name": "Máquina de Café Expresso",
-    "description": "Cafeteira automática com moedor integrado, vaporizador de leite e painel touch. O ritual perfeito para as manhãs do casal.",
+    "description": "Cafeteira automática com moedor integrado, vaporizador de leite e painel touch.",
     "price": 890,
     "image": "https://images.unsplash.com/photo-1520970014086-2208d157c9e2?w=600&q=80",
     "category": "Cozinha",
@@ -156,7 +203,7 @@
     "featured": true
   },
   {
-    "id": "p018",
+    "id": "p015",
     "name": "Kit Spa em Casa",
     "description": "Conjunto com óleos essenciais, sais de banho, esfoliante e velas aromáticas.",
     "price": 185,
@@ -165,22 +212,12 @@
     "purchased": false
   },
   {
-    "id": "p019",
+    "id": "p016",
     "name": "Relógio de Parede Minimalista",
     "description": "Relógio silencioso em alumínio escovado, design escandinavo. 40cm de diâmetro.",
     "price": 175,
     "image": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=400&q=80",
     "category": "Sala",
     "purchased": false
-  },
-  {
-    "id": "p020",
-    "name": "Voucher Viagem — Surpresa",
-    "description": "Contribua para a lua-de-mel dos noivos. Cada centavo se transforma em memória, aventura e amor ao redor do mundo.",
-    "price": 500,
-    "image": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80",
-    "category": "Viagem",
-    "purchased": false,
-    "featured": true
   }
 ]
