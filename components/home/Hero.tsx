@@ -31,7 +31,7 @@ export default function Hero() {
       {/* ── Parallax photo ─────────────────────────────────── */}
       <motion.div style={{ y }} className="absolute inset-0 scale-[1.15]">
         <Image
-          src="/images/book6.png"
+          src="/images/book2.png"
           alt="Natacha e Mauricio"
           fill
           className="object-cover object-center"

@@ -7,13 +7,13 @@ export const GOOGLE_MAPS_URL =
 
 export const GIFT_CATEGORIES = [
   'Todos',
+  'Lua de Mel',
   'Destaques',
   'Cozinha',
   'Quarto',
   'Sala',
   'Banheiro',
   'Lazer',
-  'Viagem',
 ]
 
 export const PIX_KEY = process.env.NEXT_PUBLIC_PIX_KEY || 'natacha@casamento.com'
