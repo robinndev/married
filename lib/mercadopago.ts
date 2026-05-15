@@ -41,7 +41,8 @@ export async function createPreference(input: CreatePreferenceInput): Promise<st
       },
       auto_return: siteUrl.startsWith('http://localhost') ? undefined : 'approved',
       payment_methods: {
-        installments: 12,
+        // parcela mínima de R$5 exigida pelo MP — calcula o máximo permitido pelo preço
+        installments: Math.max(1, Math.min(12, Math.floor(input.price / 5))),
       },
       statement_descriptor: 'N&M 01.08.2026',
       external_reference: input.id,

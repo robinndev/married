@@ -1,8 +1,17 @@
 [
   {
+    "id": "teste003",
+    "name": "R$ 3,00",
+    "description": "Contribuição simbólica para o nosso novo lar.",
+    "price": 3,
+    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
     "id": "teste001",
-    "name": "Presente de Teste — R$ 1,00",
-    "description": "Item de teste para validação do checkout em produção. Pode ser removido após os testes.",
+    "name": "R$ 1,00",
+    "description": "Contribuição simbólica para o nosso novo lar.",
     "price": 1,
     "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
     "category": "Lazer",
@@ -10,9 +19,27 @@
   },
   {
     "id": "teste010",
-    "name": "Presente de Teste — R$ 10,00",
-    "description": "Item de teste para validação do checkout em produção. Pode ser removido após os testes.",
+    "name": "R$ 10,00",
+    "description": "Contribuição simbólica para o nosso novo lar.",
     "price": 10,
+    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
+    "id": "teste015",
+    "name": "R$ 15,00",
+    "description": "Contribuição simbólica para o nosso novo lar.",
+    "price": 15,
+    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
+    "category": "Lazer",
+    "purchased": false
+  },
+  {
+    "id": "teste020",
+    "name": "R$ 20,00",
+    "description": "Contribuição simbólica para o nosso novo lar.",
+    "price": 20,
     "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
     "category": "Lazer",
     "purchased": false
