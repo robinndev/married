@@ -1,11 +1,24 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { GOOGLE_MAPS_URL, WEDDING_DATE } from '@/constants'
 import { useCountdown } from '@/hooks/useCountdown'
+
+const PHOTOS = [
+  '/images/book1.png',
+  '/images/book2.png',
+  '/images/book3.png',
+  '/images/book4.png',
+  '/images/book5.png',
+  '/images/book6.png',
+  '/images/book7.png',
+  '/images/book8.png',
+]
+
+const INTERVAL_MS = 5500
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -21,6 +34,15 @@ export default function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0])
 
+  const [photoIndex, setPhotoIndex] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPhotoIndex((i) => (i + 1) % PHOTOS.length)
+    }, INTERVAL_MS)
+    return () => clearInterval(id)
+  }, [])
+
   const { days, hours, minutes, seconds } = useCountdown(WEDDING_DATE)
 
   return (
@@ -28,16 +50,27 @@ export default function Hero() {
       ref={containerRef}
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
     >
-      {/* ── Parallax photo ─────────────────────────────────── */}
+      {/* ── Parallax slideshow ─────────────────────────────── */}
       <motion.div style={{ y }} className="absolute inset-0 scale-[1.15]">
-        <Image
-          src="/images/book2.png"
-          alt="Natacha e Mauricio"
-          fill
-          className="object-cover object-center"
-          priority
-          quality={88}
-        />
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={photoIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.4, ease: 'easeInOut' }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={PHOTOS[photoIndex]}
+              alt="Natacha e Mauricio"
+              fill
+              className="object-cover object-center"
+              priority={photoIndex === 0}
+              quality={88}
+            />
+          </motion.div>
+        </AnimatePresence>
       </motion.div>
 
       {/* ── Sunset cinematic overlay ───────────────────────── */}

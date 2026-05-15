@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import QRCode from 'react-qr-code'
 import { PIX_KEY } from '@/constants'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
@@ -78,58 +79,76 @@ export default function PIXSection() {
 
           <div className="relative z-10 flex flex-col gap-6">
             {/* ── PIX manual copy ───────────────────────────────── */}
-            <div className="flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
-              <div className="flex flex-col gap-1 flex-1">
-                <p
-                  className="text-[0.52rem] tracking-[0.45em] uppercase"
-                  style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
-                >
-                  Área especial
-                </p>
-                <h3
-                  className="text-2xl md:text-3xl font-light text-white"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
-                >
-                  PIX Surpresa
-                </h3>
-                <p
-                  className="text-xs italic mt-0.5"
-                  style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
-                >
-                  para a lua-de-mel e o novo lar
-                </p>
-              </div>
-
+            <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
+              {/* QR Code */}
               <div
-                className="px-5 py-2.5 rounded-xl flex-shrink-0"
-                style={{ background: 'rgba(200,146,74,0.08)', border: '1px solid rgba(200,146,74,0.22)' }}
+                className="flex-shrink-0 p-3 rounded-2xl self-start md:self-center"
+                style={{ background: '#fff', border: '1px solid rgba(200,146,74,0.3)' }}
               >
-                <p
-                  className="text-xs tracking-widest"
-                  style={{ color: '#E2C09A', fontFamily: 'var(--font-montserrat)' }}
-                >
-                  {PIX_KEY}
-                </p>
+                <QRCode
+                  value={PIX_KEY}
+                  size={120}
+                  bgColor="#ffffff"
+                  fgColor="#1A100A"
+                  level="M"
+                />
               </div>
 
-              <motion.button
-                whileTap={{ scale: 0.96 }}
-                whileHover={{ scale: 1.04 }}
-                onClick={copy}
-                className="flex-shrink-0 px-7 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300"
-                style={{
-                  background: copied
-                    ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
-                    : 'linear-gradient(135deg, #C8924A, #C4673A)',
-                  color: '#FBF2E8',
-                  fontFamily: 'var(--font-montserrat)',
-                  boxShadow: copied
-                    ? '0 4px 20px rgba(90,138,74,0.3)'
-                    : '0 4px 20px rgba(200,146,74,0.3)',
-                }}
-              >
-                {copied ? '✓ Copiado!' : 'Copiar Chave PIX'}
-              </motion.button>
+              <div className="flex flex-col gap-3 flex-1">
+                <div className="flex flex-col gap-1">
+                  <p
+                    className="text-[0.52rem] tracking-[0.45em] uppercase"
+                    style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+                  >
+                    Área especial
+                  </p>
+                  <h3
+                    className="text-2xl md:text-3xl font-light text-white"
+                    style={{ fontFamily: 'var(--font-cormorant)' }}
+                  >
+                    PIX Surpresa
+                  </h3>
+                  <p
+                    className="text-xs italic mt-0.5"
+                    style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
+                  >
+                    para a lua-de-mel e o novo lar
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <div
+                    className="px-5 py-2.5 rounded-xl flex-1 min-w-0"
+                    style={{ background: 'rgba(200,146,74,0.08)', border: '1px solid rgba(200,146,74,0.22)' }}
+                  >
+                    <p
+                      className="text-xs tracking-widest truncate"
+                      style={{ color: '#E2C09A', fontFamily: 'var(--font-montserrat)' }}
+                    >
+                      {PIX_KEY}
+                    </p>
+                  </div>
+
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    whileHover={{ scale: 1.04 }}
+                    onClick={copy}
+                    className="flex-shrink-0 px-7 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300"
+                    style={{
+                      background: copied
+                        ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
+                        : 'linear-gradient(135deg, #C8924A, #C4673A)',
+                      color: '#FBF2E8',
+                      fontFamily: 'var(--font-montserrat)',
+                      boxShadow: copied
+                        ? '0 4px 20px rgba(90,138,74,0.3)'
+                        : '0 4px 20px rgba(200,146,74,0.3)',
+                    }}
+                  >
+                    {copied ? '✓ Copiado!' : 'Copiar Chave PIX'}
+                  </motion.button>
+                </div>
+              </div>
             </div>
 
             {/* ── Separator ─────────────────────────────────────── */}

@@ -471,47 +471,51 @@ function Dashboard({ guests }: { guests: Guest[] }) {
         style={{ background: 'radial-gradient(ellipse at 30% 20%, rgba(200,146,74,0.1) 0%, transparent 55%)' }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-5 py-10 flex flex-col gap-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-5 pb-10 flex flex-col gap-8">
 
-        {/* ── Header ──────────────────────────────────────────── */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
+        {/* ── Hero header ─────────────────────────────────────── */}
+        <div
+          className="rounded-3xl px-8 py-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 mt-28"
+          style={{
+            background: 'linear-gradient(135deg, rgba(200,146,74,0.1) 0%, rgba(196,103,58,0.06) 60%, rgba(255,255,255,0.03) 100%)',
+            border: '1px solid rgba(200,146,74,0.22)',
+            boxShadow: '0 8px 48px rgba(0,0,0,0.25), inset 0 1px 0 rgba(200,146,74,0.15)',
+          }}
+        >
+          <div className="flex flex-col gap-2">
             <p
-              className="text-[0.5rem] tracking-[0.5em] uppercase mb-1"
+              className="text-[0.5rem] tracking-[0.55em] uppercase"
               style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
             >
-              Painel exclusivo
+              Painel exclusivo · Área dos noivos
             </p>
             <h1
-              className="text-4xl md:text-5xl font-light text-white leading-tight"
+              className="text-5xl md:text-6xl font-light text-white leading-tight"
               style={{ fontFamily: 'var(--font-cormorant)' }}
             >
-              Natacha & Mauricio
+              Natacha <span style={{ color: '#C8924A' }}>&</span> Mauricio
             </h1>
-            <p
-              className="text-xs mt-1"
-              style={{ color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-montserrat)' }}
-            >
-              01 · 08 · 2026 · Mairiporã, SP
-            </p>
+            <div className="flex items-center gap-3 mt-1">
+              <div className="h-px w-8" style={{ background: 'rgba(200,146,74,0.4)' }} />
+              <p
+                className="text-[0.58rem] tracking-[0.3em] uppercase"
+                style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}
+              >
+                01 · 08 · 2026 · Mairiporã, SP
+              </p>
+            </div>
           </div>
 
           {/* Countdown */}
-          <div
-            className="flex gap-4 sm:gap-6 px-5 py-3 rounded-2xl flex-shrink-0"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(200,146,74,0.18)',
-            }}
-          >
+          <div className="flex gap-6 sm:gap-8 flex-shrink-0">
             {[
               { v: pad(countdown.days), l: 'dias' },
               { v: pad(countdown.hours), l: 'horas' },
               { v: pad(countdown.minutes), l: 'min' },
             ].map(({ v, l }) => (
-              <div key={l} className="flex flex-col items-center gap-0.5">
+              <div key={l} className="flex flex-col items-center gap-1">
                 <span
-                  className="text-2xl font-light text-white leading-none"
+                  className="text-4xl font-light text-white leading-none tabular-nums"
                   style={{ fontFamily: 'var(--font-cormorant)' }}
                 >
                   {v}
