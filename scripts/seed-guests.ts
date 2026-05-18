@@ -40,6 +40,7 @@ async function seed() {
 
     await setDoc(ref, {
       name: guest.name,
+      nucleus: guest.nucleus ?? '',
       invitedAt: INVITED_AT,
       confirmed: false,
     })

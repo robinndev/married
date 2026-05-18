@@ -1,48 +1,22 @@
 [
   {
-    "id": "teste003",
-    "name": "R$ 3,00",
-    "description": "Contribuição simbólica para o nosso novo lar.",
-    "price": 3,
-    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
-    "category": "Lazer",
+    "id": "simbolico050",
+    "name": "Presente Simbólico — R$ 50",
+    "description": "Um gesto de carinho para o novo lar. Cada contribuição simbólica ajuda a construir nossa história juntos.",
+    "price": 50,
+    "image": "https://images.unsplash.com/photo-1490750967868-88df5691cc52?w=400&q=80",
+    "category": "Destaques",
     "purchased": false
   },
   {
-    "id": "teste001",
-    "name": "R$ 1,00",
-    "description": "Contribuição simbólica para o nosso novo lar.",
-    "price": 1,
-    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
-    "category": "Lazer",
-    "purchased": false
-  },
-  {
-    "id": "teste010",
-    "name": "R$ 10,00",
-    "description": "Contribuição simbólica para o nosso novo lar.",
-    "price": 10,
-    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
-    "category": "Lazer",
-    "purchased": false
-  },
-  {
-    "id": "teste015",
-    "name": "R$ 15,00",
-    "description": "Contribuição simbólica para o nosso novo lar.",
-    "price": 15,
-    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
-    "category": "Lazer",
-    "purchased": false
-  },
-  {
-    "id": "teste020",
-    "name": "R$ 20,00",
-    "description": "Contribuição simbólica para o nosso novo lar.",
-    "price": 20,
-    "image": "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=400&q=80",
-    "category": "Lazer",
-    "purchased": false
+    "id": "simbolico100",
+    "name": "Presente Simbólico — R$ 100",
+    "description": "Uma contribuição especial para a vida a dois. Com amor e gratidão de Natacha & Mauricio.",
+    "price": 100,
+    "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80",
+    "category": "Destaques",
+    "purchased": false,
+    "featured": true
   },
   {
     "id": "lm001",
@@ -115,7 +89,7 @@
     "name": "Moqueca Especial para Dois",
     "description": "Uma experiência gastronômica com moqueca de peixe ou camarão frescos, preparada por cozinheira local, com vista para o mar.",
     "price": 180,
-    "image": "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&q=80",
+    "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=80",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -170,7 +144,7 @@
     "name": "Quadro Decorativo Personalizado",
     "description": "Arte em canvas com frase especial do casal, formato 60x40cm com moldura elegante.",
     "price": 160,
-    "image": "https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=400&q=80",
+    "image": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&q=80",
     "category": "Sala",
     "purchased": false
   },

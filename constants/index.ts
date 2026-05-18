@@ -16,4 +16,6 @@ export const GIFT_CATEGORIES = [
   'Lazer',
 ]
 
-export const PIX_KEY = process.env.NEXT_PUBLIC_PIX_KEY || 'natacha@casamento.com'
+export const PIX_KEY = process.env.NEXT_PUBLIC_PIX_KEY || '11941112255'
+export const PIX_DISPLAY = '(11) 94111-2255'
+export const PIX_NAME = 'Natacha De Mendonça'

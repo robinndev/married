@@ -2,15 +2,40 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import QRCode from 'react-qr-code'
-import { PIX_KEY } from '@/constants'
+import { PIX_KEY, PIX_DISPLAY, PIX_NAME } from '@/constants'
 import AnimatedSection from '@/components/ui/AnimatedSection'
+
+function ItauBadge() {
+  return (
+    <div
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+      style={{
+        background: 'rgba(236,112,0,0.15)',
+        border: '1px solid rgba(236,112,0,0.35)',
+      }}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="12" fill="#EC7000" />
+        <text x="12" y="16" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold" fontFamily="Arial">i</text>
+      </svg>
+      <span
+        style={{
+          color: '#EC7000',
+          fontFamily: 'var(--font-montserrat)',
+          fontSize: '0.55rem',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+          fontWeight: 600,
+        }}
+      >
+        Itaú
+      </span>
+    </div>
+  )
+}
 
 export default function PIXSection() {
   const [copied, setCopied] = useState(false)
-  const [amount, setAmount] = useState('')
-  const [mpLoading, setMpLoading] = useState(false)
-  const [mpError, setMpError] = useState<string | null>(null)
 
   const copy = async () => {
     try {
@@ -18,42 +43,7 @@ export default function PIXSection() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2800)
     } catch {
-      alert(`Chave PIX: ${PIX_KEY}`)
-    }
-  }
-
-  const contribute = async () => {
-    const numeric = parseFloat(amount.replace(',', '.'))
-    if (!numeric || numeric < 1) {
-      setMpError('Valor mínimo: R$ 1,00')
-      return
-    }
-    if (numeric > 50_000) {
-      setMpError('Valor máximo: R$ 50.000,00')
-      return
-    }
-
-    setMpLoading(true)
-    setMpError(null)
-
-    try {
-      const res = await fetch('/api/create-preference', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'contribution', amount: numeric }),
-      })
-      const data: { init_point?: string; error?: string } = await res.json()
-
-      if (!res.ok || !data.init_point) {
-        setMpError(data.error ?? 'Erro ao processar. Tente novamente.')
-        return
-      }
-
-      window.location.href = data.init_point
-    } catch {
-      setMpError('Erro de conexão. Verifique sua internet.')
-    } finally {
-      setMpLoading(false)
+      alert(`Chave PIX: ${PIX_DISPLAY}`)
     }
   }
 
@@ -61,7 +51,7 @@ export default function PIXSection() {
     <AnimatedSection>
       <div className="max-w-4xl mx-auto px-5 pt-12 pb-2">
         <div
-          className="relative rounded-2xl overflow-hidden px-8 py-8 md:py-10"
+          className="relative rounded-2xl overflow-hidden px-8 py-9 md:py-11"
           style={{
             background: 'linear-gradient(135deg, #1A100A 0%, #2E1A0E 60%, #3A200E 100%)',
             border: '1px solid rgba(200,146,74,0.22)',
@@ -77,167 +67,88 @@ export default function PIXSection() {
           />
           <div className="divider-sunset absolute top-0 inset-x-0" />
 
-          <div className="relative z-10 flex flex-col gap-6">
-            {/* ── PIX manual copy ───────────────────────────────── */}
-            <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-8">
-              {/* QR Code */}
-              <div
-                className="flex-shrink-0 p-3 rounded-2xl self-start md:self-center"
-                style={{ background: '#fff', border: '1px solid rgba(200,146,74,0.3)' }}
-              >
-                <QRCode
-                  value={PIX_KEY}
-                  size={120}
-                  bgColor="#ffffff"
-                  fgColor="#1A100A"
-                  level="M"
-                />
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+            {/* Left: text */}
+            <div className="flex flex-col gap-4 flex-1">
+              <div className="flex flex-col gap-1.5">
+                <p
+                  className="text-[0.5rem] tracking-[0.45em] uppercase"
+                  style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+                >
+                  Presente do coração
+                </p>
+                <h3
+                  className="text-3xl md:text-4xl font-light text-white"
+                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                >
+                  PIX Surpresa
+                </h3>
+                <p
+                  className="text-sm leading-relaxed mt-1"
+                  style={{ color: 'rgba(226,192,154,0.75)', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
+                >
+                  Prefere escolher o valor você mesmo? Manda um PIX com carinho —
+                  qualquer quantia é recebida com muita gratidão e amor.
+                </p>
               </div>
 
-              <div className="flex flex-col gap-3 flex-1">
-                <div className="flex flex-col gap-1">
-                  <p
-                    className="text-[0.52rem] tracking-[0.45em] uppercase"
-                    style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
-                  >
-                    Área especial
-                  </p>
-                  <h3
-                    className="text-2xl md:text-3xl font-light text-white"
-                    style={{ fontFamily: 'var(--font-cormorant)' }}
-                  >
-                    PIX Surpresa
-                  </h3>
-                  <p
-                    className="text-xs italic mt-0.5"
-                    style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
-                  >
-                    para a lua-de-mel e o novo lar
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  <div
-                    className="px-5 py-2.5 rounded-xl flex-1 min-w-0"
-                    style={{ background: 'rgba(200,146,74,0.08)', border: '1px solid rgba(200,146,74,0.22)' }}
-                  >
+              {/* PIX Key card */}
+              <div
+                className="rounded-xl px-5 py-4 flex flex-col gap-3"
+                style={{ background: 'rgba(200,146,74,0.07)', border: '1px solid rgba(200,146,74,0.2)' }}
+              >
+                <div className="flex items-center justify-between gap-3 flex-wrap">
+                  <div className="flex flex-col gap-0.5">
                     <p
-                      className="text-xs tracking-widest truncate"
-                      style={{ color: '#E2C09A', fontFamily: 'var(--font-montserrat)' }}
+                      className="text-[0.48rem] tracking-[0.3em] uppercase"
+                      style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
                     >
-                      {PIX_KEY}
+                      Telefone · Chave PIX
+                    </p>
+                    <p
+                      className="text-xl font-light tracking-wider"
+                      style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
+                    >
+                      {PIX_DISPLAY}
                     </p>
                   </div>
-
-                  <motion.button
-                    whileTap={{ scale: 0.96 }}
-                    whileHover={{ scale: 1.04 }}
-                    onClick={copy}
-                    className="flex-shrink-0 px-7 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300"
-                    style={{
-                      background: copied
-                        ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
-                        : 'linear-gradient(135deg, #C8924A, #C4673A)',
-                      color: '#FBF2E8',
-                      fontFamily: 'var(--font-montserrat)',
-                      boxShadow: copied
-                        ? '0 4px 20px rgba(90,138,74,0.3)'
-                        : '0 4px 20px rgba(200,146,74,0.3)',
-                    }}
-                  >
-                    {copied ? '✓ Copiado!' : 'Copiar Chave PIX'}
-                  </motion.button>
+                  <ItauBadge />
                 </div>
-              </div>
-            </div>
 
-            {/* ── Separator ─────────────────────────────────────── */}
-            <div
-              className="h-px w-full"
-              style={{ background: 'rgba(200,146,74,0.15)' }}
-            />
-
-            {/* ── MP Checkout contribution ───────────────────────── */}
-            <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-              <div className="flex flex-col gap-2 flex-1">
-                <label
-                  className="text-[0.5rem] tracking-[0.35em] uppercase"
-                  style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
-                >
-                  Ou contribua qualquer valor via Mercado Pago
-                </label>
-                <div className="relative">
-                  <span
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-medium"
-                    style={{ color: '#E2C09A', fontFamily: 'var(--font-montserrat)' }}
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(200,146,74,0.5)' }} />
+                  <p
+                    className="text-xs"
+                    style={{ color: 'rgba(226,192,154,0.7)', fontFamily: 'var(--font-montserrat)' }}
                   >
-                    R$
-                  </span>
-                  <input
-                    type="number"
-                    min="1"
-                    step="any"
-                    value={amount}
-                    onChange={(e) => { setAmount(e.target.value); setMpError(null) }}
-                    onKeyDown={(e) => e.key === 'Enter' && contribute()}
-                    placeholder="100"
-                    className="w-full pl-10 pr-4 py-3 rounded-xl text-sm transition-colors"
-                    style={{
-                      background: 'rgba(255,255,255,0.07)',
-                      border: mpError
-                        ? '1px solid rgba(196,103,58,0.6)'
-                        : '1px solid rgba(200,146,74,0.22)',
-                      color: '#FBF2E8',
-                      fontFamily: 'var(--font-montserrat)',
-                      outline: 'none',
-                    }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.55)')}
-                    onBlur={(e) =>
-                      (e.currentTarget.style.borderColor = mpError
-                        ? 'rgba(196,103,58,0.6)'
-                        : 'rgba(200,146,74,0.22)')
-                    }
-                  />
-                </div>
-                {mpError && (
-                  <p className="text-[0.55rem]" style={{ color: '#C4673A', fontFamily: 'var(--font-montserrat)' }}>
-                    {mpError}
+                    {PIX_NAME}
                   </p>
-                )}
+                </div>
               </div>
 
               <motion.button
-                whileTap={!mpLoading ? { scale: 0.96 } : {}}
-                whileHover={!mpLoading ? { scale: 1.03 } : {}}
-                onClick={contribute}
-                disabled={mpLoading}
-                className="flex-shrink-0 px-7 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                whileTap={{ scale: 0.96 }}
+                whileHover={{ scale: 1.03 }}
+                onClick={copy}
+                className="self-start px-8 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300"
                 style={{
-                  background: mpLoading
-                    ? 'rgba(200,146,74,0.25)'
+                  background: copied
+                    ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
                     : 'linear-gradient(135deg, #C8924A, #C4673A)',
                   color: '#FBF2E8',
                   fontFamily: 'var(--font-montserrat)',
-                  boxShadow: mpLoading ? 'none' : '0 4px 20px rgba(200,146,74,0.3)',
-                  cursor: mpLoading ? 'not-allowed' : 'pointer',
-                  minWidth: '12rem',
+                  boxShadow: copied
+                    ? '0 4px 20px rgba(90,138,74,0.3)'
+                    : '0 4px 20px rgba(200,146,74,0.3)',
                 }}
               >
-                {mpLoading ? (
-                  <>
-                    <motion.span
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                      style={{ display: 'inline-block' }}
-                    >
-                      ◌
-                    </motion.span>
-                    aguardando...
-                  </>
-                ) : (
-                  'Ir para o Checkout →'
-                )}
+                {copied ? '✓ Chave copiada!' : 'Copiar Chave PIX'}
               </motion.button>
+            </div>
+
+            {/* Right: decorative */}
+            <div className="hidden md:flex flex-col items-center gap-3 opacity-30">
+              <div className="text-6xl" style={{ color: '#E2C09A' }}>♥</div>
             </div>
           </div>
         </div>

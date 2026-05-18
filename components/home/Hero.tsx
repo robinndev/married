@@ -112,7 +112,7 @@ export default function Hero() {
         <motion.p
           initial={{ opacity: 0, y: -18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.0, duration: 0.9 }}
+          transition={{ delay: 0.2, duration: 0.9 }}
           className="text-[0.6rem] tracking-[0.55em] uppercase"
           style={{ color: 'rgba(226,192,154,0.85)', fontFamily: 'var(--font-montserrat)' }}
         >
@@ -122,7 +122,7 @@ export default function Hero() {
         <motion.h1
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 3.2, duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ delay: 0.35, duration: 1.1, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-[clamp(4rem,12vw,9rem)] font-light text-white leading-[0.92] tracking-tight"
           style={{ fontFamily: 'var(--font-cormorant)' }}
         >
@@ -131,7 +131,7 @@ export default function Hero() {
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 3.6, duration: 0.8 }}
+            transition={{ delay: 0.65, duration: 0.8 }}
             style={{ color: '#E2C09A' }}
           >
             &
@@ -143,7 +143,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ delay: 3.7, duration: 0.7 }}
+          transition={{ delay: 0.7, duration: 0.7 }}
           className="flex flex-col items-center gap-3"
         >
           <div className="divider-sunset w-20" />
@@ -166,7 +166,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 4.0, duration: 1.0 }}
+          transition={{ delay: 0.9, duration: 1.0 }}
           className="flex items-center gap-6 md:gap-10"
         >
           {[
@@ -196,7 +196,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 4.2, duration: 0.8 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
           className="flex flex-col sm:flex-row gap-3 mt-1"
         >
           <Link

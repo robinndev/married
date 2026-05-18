@@ -1,12 +1,15 @@
 export interface Guest {
   id: string
   name: string
+  nucleus?: string
   invitedAt: string
   confirmed?: boolean
   phone?: string
   message?: string
   totalGuests?: number
   confirmedAt?: string | null
+  companions?: string[]
+  groupLeaderId?: string
 }
 
 export interface Message {

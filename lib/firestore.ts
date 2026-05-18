@@ -11,6 +11,7 @@ import {
   orderBy,
   onSnapshot,
   Timestamp,
+  writeBatch,
 } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Guest, Message } from '@/types'
@@ -65,6 +66,37 @@ export async function confirmGuest(
   })
 }
 
+export async function confirmGroup(
+  primaryId: string,
+  companionIds: string[],
+  data: { phone: string; message?: string; totalGuests: number }
+) {
+  const batch = writeBatch(db)
+  const now = Timestamp.now()
+
+  const primaryRef = doc(db, 'guests', primaryId)
+  batch.update(primaryRef, {
+    confirmed: true,
+    phone: data.phone.trim(),
+    message: data.message?.trim() ?? '',
+    totalGuests: data.totalGuests,
+    confirmedAt: now,
+    ...(companionIds.length > 0 ? { companions: companionIds } : {}),
+  })
+
+  for (const cId of companionIds) {
+    const cRef = doc(db, 'guests', cId)
+    batch.update(cRef, {
+      confirmed: true,
+      totalGuests: data.totalGuests,
+      confirmedAt: now,
+      groupLeaderId: primaryId,
+    })
+  }
+
+  await batch.commit()
+}
+
 export async function unconfirmGuest(guestId: string) {
   const ref = doc(db, 'guests', guestId)
   await updateDoc(ref, {
@@ -73,7 +105,35 @@ export async function unconfirmGuest(guestId: string) {
     message: deleteField(),
     totalGuests: deleteField(),
     confirmedAt: deleteField(),
+    companions: deleteField(),
+    groupLeaderId: deleteField(),
   })
+}
+
+export async function unconfirmGroup(primaryId: string, companionIds: string[]) {
+  const batch = writeBatch(db)
+
+  const primaryRef = doc(db, 'guests', primaryId)
+  batch.update(primaryRef, {
+    confirmed: false,
+    phone: deleteField(),
+    message: deleteField(),
+    totalGuests: deleteField(),
+    confirmedAt: deleteField(),
+    companions: deleteField(),
+  })
+
+  for (const cId of companionIds) {
+    const cRef = doc(db, 'guests', cId)
+    batch.update(cRef, {
+      confirmed: false,
+      totalGuests: deleteField(),
+      confirmedAt: deleteField(),
+      groupLeaderId: deleteField(),
+    })
+  }
+
+  await batch.commit()
 }
 
 export async function updateGuestInfo(
@@ -82,6 +142,16 @@ export async function updateGuestInfo(
 ) {
   const ref = doc(db, 'guests', guestId)
   await updateDoc(ref, data)
+}
+
+// ── Gift analytics ────────────────────────────────────────
+export async function logGiftClick(giftId: string, giftName: string, price: number) {
+  return addDoc(collection(db, 'giftClicks'), {
+    giftId,
+    giftName,
+    price,
+    clickedAt: Timestamp.now(),
+  })
 }
 
 export async function getGuest(guestId: string): Promise<Guest | null> {

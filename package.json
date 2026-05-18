@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "seed:guests": "tsx scripts/seed-guests.ts",
+    "guests:reset": "tsx scripts/reset-guests.ts",
     "firestore:clear": "tsx scripts/clear-firestore.ts"
   },
   "dependencies": {
