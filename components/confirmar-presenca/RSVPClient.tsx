@@ -3,12 +3,95 @@
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Fuse from 'fuse.js'
+import Link from 'next/link'
 import PageHero from '@/components/ui/PageHero'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import { subscribeToGuests, confirmGroup, unconfirmGroup, unconfirmGuest } from '@/lib/firestore'
 import type { Guest } from '@/types'
 
 type Step = 'search' | 'already' | 'removing' | 'form' | 'success' | 'unconfirmed'
+
+// ── Gift prompt modal ─────────────────────────────────────
+function GiftPromptModal({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-5"
+      style={{ background: 'rgba(26,16,10,0.65)', backdropFilter: 'blur(8px)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.88, y: 24 }}
+        transition={{ type: 'spring', stiffness: 240, damping: 24 }}
+        className="w-full max-w-sm rounded-3xl text-center overflow-hidden"
+        style={{
+          background: 'linear-gradient(160deg, #FBF2E8 0%, #F4E5D0 100%)',
+          border: '1px solid rgba(200,146,74,0.22)',
+          boxShadow: '0 32px 80px rgba(26,16,10,0.35)',
+        }}
+      >
+        <div
+          className="px-8 py-8 flex flex-col items-center gap-5"
+        >
+          <motion.div
+            initial={{ scale: 0, rotate: -20 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
+            className="text-4xl"
+          >
+            🎁
+          </motion.div>
+
+          <div className="flex flex-col gap-2">
+            <h3
+              className="text-2xl font-light"
+              style={{ fontFamily: 'var(--font-cormorant)', color: '#2A1A0F' }}
+            >
+              Que tal um presentinho?
+            </h3>
+            <p
+              className="text-xs leading-relaxed"
+              style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+            >
+              Sua presença já é o maior presente, mas se quiser nos dar uma lembrancinha especial, temos uma listinha com muito carinho.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-2 w-full pt-1">
+            <Link
+              href="/presentes"
+              onClick={onClose}
+              className="w-full py-3.5 rounded-xl text-[0.62rem] tracking-[0.22em] uppercase transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+              style={{
+                background: 'linear-gradient(135deg, #C8924A, #C4673A)',
+                color: '#FBF2E8',
+                fontFamily: 'var(--font-montserrat)',
+                boxShadow: '0 4px 20px rgba(200,146,74,0.3)',
+              }}
+            >
+              Ver lista de presentes ♥
+            </Link>
+            <button
+              onClick={onClose}
+              className="w-full py-3 rounded-xl text-[0.6rem] tracking-[0.18em] uppercase transition-opacity hover:opacity-60"
+              style={{
+                color: '#8A6A50',
+                fontFamily: 'var(--font-montserrat)',
+                border: '1px solid rgba(200,146,74,0.18)',
+              }}
+            >
+              Agora não, obrigado
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
 type CompanionSlot = { search: string; selected: Guest | null }
 
 // ── Nucleus helpers ───────────────────────────────────────
@@ -94,6 +177,7 @@ export default function RSVPClient() {
   const [companionSlots, setCompanionSlots] = useState<CompanionSlot[]>([])
   const [actionLoading, setActionLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showGiftModal, setShowGiftModal] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -193,6 +277,7 @@ export default function RSVPClient() {
         totalGuests,
       })
       setStep('success')
+      setTimeout(() => setShowGiftModal(true), 1800)
     } catch {
       setError('Erro ao confirmar. Verifique sua conexão e tente novamente.')
     } finally {
@@ -230,6 +315,7 @@ export default function RSVPClient() {
     setCompanionSlots([])
     setError(null)
     setActionLoading(false)
+    setShowGiftModal(false)
     setTimeout(() => inputRef.current?.focus(), 100)
   }
 
@@ -975,6 +1061,13 @@ export default function RSVPClient() {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* ── Gift prompt modal ─────────────────────────────── */}
+      <AnimatePresence>
+        {showGiftModal && (
+          <GiftPromptModal onClose={() => setShowGiftModal(false)} />
+        )}
+      </AnimatePresence>
     </div>
   )
 }

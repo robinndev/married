@@ -7,7 +7,8 @@ import PageHero from '@/components/ui/PageHero'
 import PIXSection from './PIXSection'
 import giftsData from '@/mocks/gifts.json'
 import type { Gift } from '@/types'
-import { GIFT_CATEGORIES } from '@/constants'
+import { GIFT_CATEGORIES, PIX_KEY, PIX_DISPLAY, PIX_NAME } from '@/constants'
+import { logGiftClick } from '@/lib/firestore'
 
 const allGifts: Gift[] = giftsData as Gift[]
 
@@ -23,10 +24,396 @@ const inputStyle = {
   outline: 'none',
 }
 
+// ── Itaú badge ────────────────────────────────────────────
+function ItauBadge({ large }: { large?: boolean }) {
+  return (
+    <div
+      className="inline-flex items-center gap-1.5 rounded-full"
+      style={{
+        background: 'rgba(236,112,0,0.12)',
+        border: '1px solid rgba(236,112,0,0.3)',
+        padding: large ? '6px 14px' : '4px 10px',
+      }}
+    >
+      <svg width={large ? 16 : 12} height={large ? 16 : 12} viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="12" fill="#EC7000" />
+        <text x="12" y="16.5" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="bold" fontFamily="Arial">i</text>
+      </svg>
+      <span
+        style={{
+          color: '#EC7000',
+          fontFamily: 'var(--font-montserrat)',
+          fontSize: large ? '0.65rem' : '0.5rem',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase' as const,
+          fontWeight: 600,
+        }}
+      >
+        Itaú
+      </span>
+    </div>
+  )
+}
+
+// ── Payment modal ─────────────────────────────────────────
+type PayStep = 'choose' | 'pix' | 'card'
+
+interface PaymentModalProps {
+  gift: Gift
+  onClose: () => void
+}
+
+function PaymentModal({ gift, onClose }: PaymentModalProps) {
+  const [step, setStep] = useState<PayStep>('choose')
+  const [copied, setCopied] = useState(false)
+  const [cardLoading, setCardLoading] = useState(false)
+  const [cardError, setCardError] = useState<string | null>(null)
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(PIX_KEY)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2800)
+    } catch {
+      alert(`Chave PIX: ${PIX_DISPLAY}`)
+    }
+  }
+
+  const payByCard = async () => {
+    setCardLoading(true)
+    setCardError(null)
+    try {
+      const res = await fetch('/api/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'gift', id: gift.id }),
+      })
+      const data: { init_point?: string; error?: string } = await res.json()
+      if (!res.ok || !data.init_point) {
+        setCardError(data.error ?? 'Erro ao processar. Tente novamente.')
+        setCardLoading(false)
+        return
+      }
+      window.location.href = data.init_point
+    } catch {
+      setCardError('Erro de conexão. Verifique sua internet.')
+      setCardLoading(false)
+    }
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(26,16,10,0.72)', backdropFilter: 'blur(8px)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.92, y: 20 }}
+        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+        className="w-full max-w-md rounded-3xl overflow-hidden"
+        style={{
+          background: '#FBF2E8',
+          border: '1px solid rgba(200,146,74,0.2)',
+          boxShadow: '0 32px 80px rgba(26,16,10,0.4)',
+        }}
+      >
+        {/* Modal header */}
+        <div
+          className="px-7 pt-7 pb-5"
+          style={{ borderBottom: '1px solid rgba(200,146,74,0.12)' }}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-1 min-w-0">
+              <p
+                className="text-[0.48rem] tracking-[0.38em] uppercase"
+                style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+              >
+                Dar este presente
+              </p>
+              <h3
+                className="text-2xl font-light leading-tight"
+                style={{ fontFamily: 'var(--font-cormorant)', color: '#2A1A0F' }}
+              >
+                {gift.name}
+              </h3>
+              <p
+                className="text-xl font-light mt-0.5"
+                style={{ fontFamily: 'var(--font-cormorant)', color: '#C8924A' }}
+              >
+                {formatBRL(gift.price)}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110"
+              style={{
+                background: 'rgba(200,146,74,0.1)',
+                color: '#8A6A50',
+                fontFamily: 'var(--font-montserrat)',
+                fontSize: '0.75rem',
+              }}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        {/* Modal body */}
+        <div className="px-7 py-6">
+          <AnimatePresence mode="wait">
+
+            {/* ── Choose step ── */}
+            {step === 'choose' && (
+              <motion.div
+                key="choose"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 12 }}
+                transition={{ duration: 0.22 }}
+                className="flex flex-col gap-4"
+              >
+                <p
+                  className="text-xs text-center"
+                  style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                >
+                  Como você prefere pagar?
+                </p>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {/* PIX option */}
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setStep('pix')}
+                    className="flex flex-col items-center gap-3 rounded-2xl p-5 transition-all duration-200"
+                    style={{
+                      background: 'rgba(236,112,0,0.05)',
+                      border: '2px solid rgba(236,112,0,0.2)',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(236,112,0,0.45)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(236,112,0,0.2)')}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                      style={{ background: 'rgba(236,112,0,0.1)' }}
+                    >
+                      📱
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <span
+                        className="text-sm font-medium"
+                        style={{ fontFamily: 'var(--font-montserrat)', color: '#2A1A0F' }}
+                      >
+                        PIX
+                      </span>
+                      <span
+                        className="text-[0.5rem] tracking-wide text-center"
+                        style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                      >
+                        Instantâneo · Qualquer banco
+                      </span>
+                    </div>
+                    <ItauBadge />
+                  </motion.button>
+
+                  {/* Card option */}
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={payByCard}
+                    className="flex flex-col items-center gap-3 rounded-2xl p-5 transition-all duration-200"
+                    style={{
+                      background: 'rgba(0,157,222,0.04)',
+                      border: '2px solid rgba(0,157,222,0.18)',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(0,157,222,0.4)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,157,222,0.18)')}
+                  >
+                    <div
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                      style={{ background: 'rgba(0,157,222,0.08)' }}
+                    >
+                      💳
+                    </div>
+                    <div className="flex flex-col items-center gap-1">
+                      <span
+                        className="text-sm font-medium"
+                        style={{ fontFamily: 'var(--font-montserrat)', color: '#2A1A0F' }}
+                      >
+                        Cartão
+                      </span>
+                      <span
+                        className="text-[0.5rem] tracking-wide text-center"
+                        style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                      >
+                        Parcelado em até 12x
+                      </span>
+                    </div>
+                    <div
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
+                      style={{
+                        background: 'rgba(0,157,222,0.08)',
+                        border: '1px solid rgba(0,157,222,0.25)',
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: '#009DDE',
+                          fontFamily: 'var(--font-montserrat)',
+                          fontSize: '0.5rem',
+                          letterSpacing: '0.15em',
+                          textTransform: 'uppercase' as const,
+                          fontWeight: 600,
+                        }}
+                      >
+                        Mercado Pago
+                      </span>
+                    </div>
+                  </motion.button>
+                </div>
+
+                {cardError && (
+                  <p className="text-xs text-center" style={{ color: '#C4673A', fontFamily: 'var(--font-montserrat)' }}>
+                    {cardError}
+                  </p>
+                )}
+              </motion.div>
+            )}
+
+            {/* ── PIX step ── */}
+            {step === 'pix' && (
+              <motion.div
+                key="pix"
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -12 }}
+                transition={{ duration: 0.22 }}
+                className="flex flex-col gap-5"
+              >
+                <button
+                  onClick={() => setStep('choose')}
+                  className="self-start text-[0.52rem] tracking-widest uppercase transition-opacity hover:opacity-60"
+                  style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                >
+                  ← Voltar
+                </button>
+
+                {/* PIX card */}
+                <div
+                  className="rounded-2xl p-5 flex flex-col gap-4"
+                  style={{
+                    background: 'linear-gradient(135deg, #1A100A 0%, #2E1A0E 100%)',
+                    border: '1px solid rgba(200,146,74,0.22)',
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <p
+                      className="text-[0.48rem] tracking-[0.35em] uppercase"
+                      style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+                    >
+                      Chave PIX
+                    </p>
+                    <ItauBadge large />
+                  </div>
+
+                  <div className="flex flex-col gap-1">
+                    <p
+                      className="text-2xl font-light tracking-wider"
+                      style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
+                    >
+                      {PIX_DISPLAY}
+                    </p>
+                    <p
+                      className="text-xs"
+                      style={{ color: 'rgba(226,192,154,0.6)', fontFamily: 'var(--font-montserrat)' }}
+                    >
+                      {PIX_NAME}
+                    </p>
+                  </div>
+
+                  <div
+                    className="h-px w-full"
+                    style={{ background: 'rgba(200,146,74,0.15)' }}
+                  />
+
+                  <div className="flex items-center justify-between gap-2">
+                    <p
+                      className="text-xs"
+                      style={{ color: 'rgba(226,192,154,0.6)', fontFamily: 'var(--font-montserrat)' }}
+                    >
+                      Valor sugerido:{' '}
+                      <span style={{ color: '#E2C09A', fontWeight: 600 }}>{formatBRL(gift.price)}</span>
+                    </p>
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      onClick={copy}
+                      className="px-5 py-2 rounded-xl text-[0.58rem] tracking-[0.18em] uppercase transition-all duration-300"
+                      style={{
+                        background: copied
+                          ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
+                          : 'linear-gradient(135deg, #C8924A, #C4673A)',
+                        color: '#FBF2E8',
+                        fontFamily: 'var(--font-montserrat)',
+                        boxShadow: '0 3px 14px rgba(200,146,74,0.28)',
+                      }}
+                    >
+                      {copied ? '✓ Copiado!' : 'Copiar Chave'}
+                    </motion.button>
+                  </div>
+                </div>
+
+                <p
+                  className="text-xs text-center leading-relaxed"
+                  style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                >
+                  Abra o app do seu banco, escolha PIX e cole a chave.
+                  <br />
+                  Obrigado pelo carinho! ♥
+                </p>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+
+          {/* Card loading overlay */}
+          <AnimatePresence>
+            {cardLoading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-3xl"
+                style={{ background: 'rgba(251,242,232,0.96)' }}
+              >
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                  style={{ display: 'inline-block', fontSize: '1.5rem', color: '#C8924A' }}
+                >
+                  ◌
+                </motion.span>
+                <p className="text-xs" style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}>
+                  Redirecionando para o checkout...
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+// ── Main component ────────────────────────────────────────
 export default function GiftsClient() {
   const [category, setCategory] = useState('Todos')
   const [search, setSearch] = useState('')
-  const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [payingGift, setPayingGift] = useState<Gift | null>(null)
   const [toast, setToast] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
@@ -43,30 +430,9 @@ export default function GiftsClient() {
     )
   }, [category, search])
 
-  const buyGift = async (gift: Gift) => {
-    if (loadingId) return
-    setLoadingId(gift.id)
-    setToast(null)
-
-    try {
-      const res = await fetch('/api/create-preference', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'gift', id: gift.id }),
-      })
-      const data: { init_point?: string; error?: string } = await res.json()
-
-      if (!res.ok || !data.init_point) {
-        setToast(data.error ?? 'Erro ao processar. Tente novamente.')
-        return
-      }
-
-      window.location.href = data.init_point
-    } catch {
-      setToast('Erro de conexão. Verifique sua internet e tente novamente.')
-    } finally {
-      setLoadingId(null)
-    }
+  const openPayment = (gift: Gift) => {
+    setPayingGift(gift)
+    logGiftClick(gift.id, gift.name, gift.price).catch(() => {})
   }
 
   return (
@@ -171,12 +537,10 @@ export default function GiftsClient() {
               const tall = !!(gift.featured || gift.category === 'Lua de Mel')
               return (
                 <div key={gift.id} style={{ breakInside: 'avoid', marginBottom: '1rem' }}>
-                  <MosaicCard
+                  <GiftCard
                     gift={gift}
                     tall={tall}
-                    onBuy={() => buyGift(gift)}
-                    isLoading={loadingId === gift.id}
-                    disabled={loadingId !== null}
+                    onBuy={() => openPayment(gift)}
                   />
                 </div>
               )
@@ -193,6 +557,16 @@ export default function GiftsClient() {
           </div>
         )}
       </div>
+
+      {/* ── Payment modal ─────────────────────────────────────── */}
+      <AnimatePresence>
+        {payingGift && (
+          <PaymentModal
+            gift={payingGift}
+            onClose={() => setPayingGift(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* ── Error toast ───────────────────────────────────────── */}
       <AnimatePresence>
@@ -227,78 +601,103 @@ export default function GiftsClient() {
   )
 }
 
-/* ── Mosaic Card ─────────────────────────────────────────────────── */
-interface MosaicCardProps {
+// ── Gift Card ─────────────────────────────────────────────
+interface GiftCardProps {
   gift: Gift
   tall?: boolean
   onBuy: () => void
-  isLoading: boolean
-  disabled: boolean
 }
 
-function MosaicCard({ gift, tall, onBuy, isLoading, disabled }: MosaicCardProps) {
+function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
   const [hovered, setHovered] = useState(false)
   const isLuaMel = gift.category === 'Lua de Mel'
+  const isSymbolic = gift.id.startsWith('simbolico')
 
   return (
-    <div
-      className="group flex flex-col rounded-2xl overflow-hidden transition-all duration-400"
+    <motion.div
+      className="group flex flex-col rounded-2xl overflow-hidden cursor-pointer"
       style={{
-        background: '#FBF2E8',
-        border: `1px solid ${isLuaMel ? 'rgba(200,146,74,0.25)' : 'rgba(200,146,74,0.13)'}`,
+        background: '#fff',
+        border: `1px solid ${isLuaMel ? 'rgba(200,146,74,0.28)' : isSymbolic ? 'rgba(196,103,58,0.22)' : 'rgba(200,146,74,0.14)'}`,
         boxShadow: hovered
-          ? '0 16px 48px rgba(200,146,74,0.2), 0 0 0 1px rgba(200,146,74,0.24)'
+          ? '0 20px 56px rgba(200,146,74,0.22), 0 0 0 1.5px rgba(200,146,74,0.28)'
           : isLuaMel
           ? '0 6px 24px rgba(200,146,74,0.1)'
-          : '0 2px 12px rgba(26,16,10,0.06)',
-        transform: hovered ? 'translateY(-4px)' : 'none',
+          : '0 2px 14px rgba(26,16,10,0.06)',
+        transform: hovered ? 'translateY(-5px)' : 'none',
+        transition: 'all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1)',
       }}
+      onClick={onBuy}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image */}
       <div
         className="relative overflow-hidden flex-shrink-0"
-        style={{ height: tall ? '200px' : '148px' }}
+        style={{ height: tall ? '210px' : '155px' }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={gift.image}
           alt={gift.name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
-          style={{ transform: hovered ? 'scale(1.07)' : 'scale(1)' }}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            transform: hovered ? 'scale(1.08)' : 'scale(1)',
+            transition: 'transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1)',
+          }}
         />
+        {/* Gradient */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(180deg, transparent 40%, rgba(26,16,10,0.52) 100%)',
-            opacity: hovered ? 1 : 0.6,
-            transition: 'opacity 0.4s',
+            background: 'linear-gradient(180deg, rgba(26,16,10,0.08) 0%, transparent 35%, rgba(26,16,10,0.48) 100%)',
+            opacity: hovered ? 1 : 0.7,
+            transition: 'opacity 0.35s',
           }}
         />
         {hovered && (
           <div
             className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, transparent 55%, rgba(196,103,58,0.28) 100%)' }}
+            style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(196,103,58,0.22) 100%)' }}
           />
         )}
+
+        {/* Category badge */}
         <div className="absolute top-2.5 left-2.5">
           <span
-            className="text-[0.45rem] px-2 py-0.5 rounded-full tracking-[0.16em] uppercase"
+            className="text-[0.44rem] px-2 py-0.5 rounded-full tracking-[0.16em] uppercase"
             style={{
-              background: isLuaMel ? 'rgba(26,16,10,0.72)' : 'rgba(200,146,74,0.82)',
+              background: isLuaMel
+                ? 'rgba(26,16,10,0.75)'
+                : isSymbolic
+                ? 'rgba(196,103,58,0.8)'
+                : 'rgba(200,146,74,0.82)',
               color: '#FBF2E8',
               fontFamily: 'var(--font-montserrat)',
               backdropFilter: 'blur(6px)',
             }}
           >
-            {isLuaMel ? '🌊 Lua de Mel' : gift.category}
+            {isLuaMel ? '🌊 Lua de Mel' : isSymbolic ? '✦ Simbólico' : gift.category}
+          </span>
+        </div>
+
+        {/* Price on image — bottom right */}
+        <div className="absolute bottom-2.5 right-2.5">
+          <span
+            className="text-lg font-light"
+            style={{
+              fontFamily: 'var(--font-cormorant)',
+              color: '#FBF2E8',
+              textShadow: '0 1px 8px rgba(26,16,10,0.7)',
+            }}
+          >
+            {formatBRL(gift.price)}
           </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-col p-4 gap-2">
+      <div className="flex flex-col p-4 gap-2.5">
         <h3
           className="text-base md:text-lg font-light leading-tight"
           style={{ fontFamily: 'var(--font-cormorant)', color: '#2A1A0F' }}
@@ -306,57 +705,31 @@ function MosaicCard({ gift, tall, onBuy, isLoading, disabled }: MosaicCardProps)
           {gift.name}
         </h3>
         <p
-          className="text-[0.63rem] leading-relaxed"
+          className="text-[0.62rem] leading-relaxed"
           style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50' }}
         >
           {gift.description}
         </p>
-        <div
-          className="flex items-center justify-between pt-2 mt-0.5"
-          style={{ borderTop: '1px solid rgba(200,146,74,0.12)' }}
-        >
-          <span
-            className="text-lg font-light"
-            style={{ fontFamily: 'var(--font-cormorant)', color: '#2A1A0F' }}
-          >
-            {formatBRL(gift.price)}
-          </span>
-          <motion.button
-            whileTap={!disabled ? { scale: 0.95 } : {}}
-            onClick={onBuy}
-            disabled={disabled}
-            className="text-[0.5rem] tracking-[0.16em] uppercase px-3 py-1.5 rounded-lg transition-all duration-300 min-w-[3.5rem] flex items-center justify-center gap-1"
+
+        {/* CTA */}
+        <div className="pt-2 mt-auto" style={{ borderTop: '1px solid rgba(200,146,74,0.1)' }}>
+          <div
+            className="w-full py-2 rounded-lg flex items-center justify-center gap-1.5 text-[0.55rem] tracking-[0.18em] uppercase transition-all duration-300"
             style={{
-              background: isLoading
-                ? 'rgba(200,146,74,0.15)'
-                : hovered && !disabled
+              background: hovered
                 ? 'linear-gradient(135deg, #C8924A, #C4673A)'
-                : 'rgba(200,146,74,0.1)',
-              color: hovered && !disabled && !isLoading ? '#FBF2E8' : '#C8924A',
+                : 'rgba(200,146,74,0.08)',
+              color: hovered ? '#FBF2E8' : '#C8924A',
               fontFamily: 'var(--font-montserrat)',
-              border: '1px solid rgba(200,146,74,0.22)',
-              boxShadow: hovered && !disabled ? '0 2px 10px rgba(200,146,74,0.26)' : 'none',
-              cursor: disabled ? 'not-allowed' : 'pointer',
-              opacity: disabled && !isLoading ? 0.55 : 1,
+              border: `1px solid ${hovered ? 'transparent' : 'rgba(200,146,74,0.2)'}`,
+              boxShadow: hovered ? '0 3px 14px rgba(200,146,74,0.28)' : 'none',
             }}
           >
-            {isLoading ? (
-              <>
-                <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  style={{ display: 'inline-block', fontSize: '0.65rem' }}
-                >
-                  ◌
-                </motion.span>
-                <span>aguarde</span>
-              </>
-            ) : (
-              'Dar'
-            )}
-          </motion.button>
+            <span>Dar este presente</span>
+            <span style={{ opacity: hovered ? 1 : 0.6 }}>→</span>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
