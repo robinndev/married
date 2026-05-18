@@ -712,7 +712,7 @@ function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
         </p>
 
         {/* CTA */}
-        <div className="pt-2 mt-auto" style={{ borderTop: '1px solid rgba(200,146,74,0.1)' }}>
+        <div className="pt-2 mt-auto flex flex-col gap-2" style={{ borderTop: '1px solid rgba(200,146,74,0.1)' }}>
           <div
             className="w-full py-2 rounded-lg flex items-center justify-center gap-1.5 text-[0.55rem] tracking-[0.18em] uppercase transition-all duration-300"
             style={{
@@ -727,6 +727,23 @@ function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
           >
             <span>Dar este presente</span>
             <span style={{ opacity: hovered ? 1 : 0.6 }}>→</span>
+          </div>
+
+          {/* Payment options hint */}
+          <div className="flex items-center justify-center gap-2">
+            <span
+              className="text-[0.44rem] tracking-[0.12em] uppercase"
+              style={{ color: 'rgba(138,106,80,0.6)', fontFamily: 'var(--font-montserrat)' }}
+            >
+              PIX
+            </span>
+            <span style={{ color: 'rgba(138,106,80,0.3)', fontSize: '0.5rem' }}>·</span>
+            <span
+              className="text-[0.44rem] tracking-[0.12em] uppercase"
+              style={{ color: 'rgba(138,106,80,0.6)', fontFamily: 'var(--font-montserrat)' }}
+            >
+              Cartão em até {Math.max(1, Math.min(12, Math.floor(gift.price / 5)))}x
+            </span>
           </div>
         </div>
       </div>
