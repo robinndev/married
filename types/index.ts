@@ -28,4 +28,5 @@ export interface Gift {
   category: string
   purchased?: boolean
   featured?: boolean
+  imageFit?: 'cover' | 'contain'
 }

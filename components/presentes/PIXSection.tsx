@@ -5,31 +5,22 @@ import { motion } from 'framer-motion'
 import { PIX_KEY, PIX_DISPLAY, PIX_NAME } from '@/constants'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
-function ItauBadge() {
+function MpBadge() {
   return (
     <div
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full"
       style={{
-        background: 'rgba(236,112,0,0.15)',
-        border: '1px solid rgba(236,112,0,0.35)',
+        background: 'rgba(0,158,227,0.15)',
+        border: '1px solid rgba(0,158,227,0.35)',
       }}
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="12" fill="#EC7000" />
-        <text x="12" y="16" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="bold" fontFamily="Arial">i</text>
-      </svg>
-      <span
-        style={{
-          color: '#EC7000',
-          fontFamily: 'var(--font-montserrat)',
-          fontSize: '0.55rem',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
-          fontWeight: 600,
-        }}
-      >
-        Itaú
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://images.seeklogo.com/logo-png/19/2/mercado-pago-logo-png_seeklogo-198430.png"
+        alt="Mercado Pago"
+        width={80}
+        style={{ objectFit: 'contain' }}
+      />
     </div>
   )
 }
@@ -103,16 +94,16 @@ export default function PIXSection() {
                       className="text-[0.48rem] tracking-[0.3em] uppercase"
                       style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
                     >
-                      Telefone · Chave PIX
+                      E-mail · Chave PIX
                     </p>
                     <p
-                      className="text-xl font-light tracking-wider"
+                      className="text-lg font-light tracking-wide break-all"
                       style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
                     >
                       {PIX_DISPLAY}
                     </p>
                   </div>
-                  <ItauBadge />
+                  <MpBadge />
                 </div>
 
                 <div className="flex items-center gap-2">

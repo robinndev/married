@@ -24,33 +24,24 @@ const inputStyle = {
   outline: 'none',
 }
 
-// ── Itaú badge ────────────────────────────────────────────
-function ItauBadge({ large }: { large?: boolean }) {
+// ── Mercado Pago badge ────────────────────────────────────
+function MpBadge({ large }: { large?: boolean }) {
   return (
     <div
       className="inline-flex items-center gap-1.5 rounded-full"
       style={{
-        background: 'rgba(236,112,0,0.12)',
-        border: '1px solid rgba(236,112,0,0.3)',
+        background: 'rgba(0,158,227,0.12)',
+        border: '1px solid rgba(0,158,227,0.3)',
         padding: large ? '6px 14px' : '4px 10px',
       }}
     >
-      <svg width={large ? 16 : 12} height={large ? 16 : 12} viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="12" fill="#EC7000" />
-        <text x="12" y="16.5" textAnchor="middle" fill="#fff" fontSize="10" fontWeight="bold" fontFamily="Arial">i</text>
-      </svg>
-      <span
-        style={{
-          color: '#EC7000',
-          fontFamily: 'var(--font-montserrat)',
-          fontSize: large ? '0.65rem' : '0.5rem',
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase' as const,
-          fontWeight: 600,
-        }}
-      >
-        Itaú
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://images.seeklogo.com/logo-png/19/2/mercado-pago-logo-png_seeklogo-198430.png"
+        alt="Mercado Pago"
+        width={large ? 72 : 54}
+        style={{ objectFit: 'contain' }}
+      />
     </div>
   )
 }
@@ -64,7 +55,8 @@ interface PaymentModalProps {
 }
 
 function PaymentModal({ gift, onClose }: PaymentModalProps) {
-  const [step, setStep] = useState<PayStep>('choose')
+  const pixOnly = gift.price < 100
+  const [step, setStep] = useState<PayStep>(pixOnly ? 'pix' : 'choose')
   const [copied, setCopied] = useState(false)
   const [cardLoading, setCardLoading] = useState(false)
   const [cardError, setCardError] = useState<string | null>(null)
@@ -115,7 +107,7 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.92, y: 20 }}
         transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-        className="w-full max-w-md rounded-3xl overflow-hidden"
+        className="w-full max-w-md rounded-3xl overflow-hidden relative"
         style={{
           background: '#FBF2E8',
           border: '1px solid rgba(200,146,74,0.2)',
@@ -192,15 +184,15 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                     onClick={() => setStep('pix')}
                     className="flex flex-col items-center gap-3 rounded-2xl p-5 transition-all duration-200"
                     style={{
-                      background: 'rgba(236,112,0,0.05)',
-                      border: '2px solid rgba(236,112,0,0.2)',
+                      background: 'rgba(0,158,227,0.05)',
+                      border: '2px solid rgba(0,158,227,0.2)',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(236,112,0,0.45)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(236,112,0,0.2)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(0,158,227,0.45)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,158,227,0.2)')}
                   >
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                      style={{ background: 'rgba(236,112,0,0.1)' }}
+                      style={{ background: 'rgba(0,158,227,0.1)' }}
                     >
                       📱
                     </div>
@@ -218,7 +210,7 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                         Instantâneo · Qualquer banco
                       </span>
                     </div>
-                    <ItauBadge />
+                    <MpBadge />
                   </motion.button>
 
                   {/* Card option */}
@@ -228,15 +220,15 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                     onClick={payByCard}
                     className="flex flex-col items-center gap-3 rounded-2xl p-5 transition-all duration-200"
                     style={{
-                      background: 'rgba(0,157,222,0.04)',
-                      border: '2px solid rgba(0,157,222,0.18)',
+                      background: 'rgba(0,158,227,0.04)',
+                      border: '2px solid rgba(0,158,227,0.18)',
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(0,157,222,0.4)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,157,222,0.18)')}
+                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'rgba(0,158,227,0.4)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'rgba(0,158,227,0.18)')}
                   >
                     <div
                       className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                      style={{ background: 'rgba(0,157,222,0.08)' }}
+                      style={{ background: 'rgba(0,158,227,0.08)' }}
                     >
                       💳
                     </div>
@@ -254,26 +246,7 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                         Parcelado em até 12x
                       </span>
                     </div>
-                    <div
-                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full"
-                      style={{
-                        background: 'rgba(0,157,222,0.08)',
-                        border: '1px solid rgba(0,157,222,0.25)',
-                      }}
-                    >
-                      <span
-                        style={{
-                          color: '#009DDE',
-                          fontFamily: 'var(--font-montserrat)',
-                          fontSize: '0.5rem',
-                          letterSpacing: '0.15em',
-                          textTransform: 'uppercase' as const,
-                          fontWeight: 600,
-                        }}
-                      >
-                        Mercado Pago
-                      </span>
-                    </div>
+                    <MpBadge />
                   </motion.button>
                 </div>
 
@@ -295,42 +268,44 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                 transition={{ duration: 0.22 }}
                 className="flex flex-col gap-5"
               >
-                <button
-                  onClick={() => setStep('choose')}
-                  className="self-start text-[0.52rem] tracking-widest uppercase transition-opacity hover:opacity-60"
-                  style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
-                >
-                  ← Voltar
-                </button>
+                {!pixOnly && (
+                  <button
+                    onClick={() => setStep('choose')}
+                    className="self-start text-[0.52rem] tracking-widest uppercase transition-opacity hover:opacity-60"
+                    style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                  >
+                    ← Voltar
+                  </button>
+                )}
 
                 {/* PIX card */}
                 <div
                   className="rounded-2xl p-5 flex flex-col gap-4"
                   style={{
-                    background: 'linear-gradient(135deg, #1A100A 0%, #2E1A0E 100%)',
-                    border: '1px solid rgba(200,146,74,0.22)',
+                    background: 'linear-gradient(135deg, #00186A 0%, #009EE3 100%)',
+                    border: '1px solid rgba(0,158,227,0.3)',
                   }}
                 >
                   <div className="flex items-center justify-between">
                     <p
                       className="text-[0.48rem] tracking-[0.35em] uppercase"
-                      style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+                      style={{ color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-montserrat)' }}
                     >
                       Chave PIX
                     </p>
-                    <ItauBadge large />
+                    <MpBadge large />
                   </div>
 
                   <div className="flex flex-col gap-1">
                     <p
-                      className="text-2xl font-light tracking-wider"
-                      style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
+                      className="text-xl font-light tracking-wide break-all"
+                      style={{ color: '#fff', fontFamily: 'var(--font-cormorant)' }}
                     >
                       {PIX_DISPLAY}
                     </p>
                     <p
                       className="text-xs"
-                      style={{ color: 'rgba(226,192,154,0.6)', fontFamily: 'var(--font-montserrat)' }}
+                      style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-montserrat)' }}
                     >
                       {PIX_NAME}
                     </p>
@@ -338,16 +313,16 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
 
                   <div
                     className="h-px w-full"
-                    style={{ background: 'rgba(200,146,74,0.15)' }}
+                    style={{ background: 'rgba(255,255,255,0.15)' }}
                   />
 
                   <div className="flex items-center justify-between gap-2">
                     <p
                       className="text-xs"
-                      style={{ color: 'rgba(226,192,154,0.6)', fontFamily: 'var(--font-montserrat)' }}
+                      style={{ color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-montserrat)' }}
                     >
                       Valor sugerido:{' '}
-                      <span style={{ color: '#E2C09A', fontWeight: 600 }}>{formatBRL(gift.price)}</span>
+                      <span style={{ color: '#fff', fontWeight: 600 }}>{formatBRL(gift.price)}</span>
                     </p>
                     <motion.button
                       whileTap={{ scale: 0.96 }}
@@ -356,10 +331,10 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                       style={{
                         background: copied
                           ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
-                          : 'linear-gradient(135deg, #C8924A, #C4673A)',
-                        color: '#FBF2E8',
+                          : 'rgba(255,255,255,0.2)',
+                        color: '#fff',
                         fontFamily: 'var(--font-montserrat)',
-                        boxShadow: '0 3px 14px rgba(200,146,74,0.28)',
+                        border: '1px solid rgba(255,255,255,0.3)',
                       }}
                     >
                       {copied ? '✓ Copiado!' : 'Copiar Chave'}
@@ -393,7 +368,7 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
                 <motion.span
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  style={{ display: 'inline-block', fontSize: '1.5rem', color: '#C8924A' }}
+                  style={{ display: 'inline-block', fontSize: '1.5rem', color: '#009EE3' }}
                 >
                   ◌
                 </motion.span>
@@ -407,6 +382,17 @@ function PaymentModal({ gift, onClose }: PaymentModalProps) {
       </motion.div>
     </motion.div>
   )
+}
+
+// ── Category label helpers ────────────────────────────────
+const CATEGORY_LABELS: Record<string, string> = {
+  'Lua de Mel': '🌊 Lua de Mel',
+  'Simbólico': '🎁 Simbólico',
+  'Destaques': '✦ Destaques',
+}
+
+function catLabel(cat: string) {
+  return CATEGORY_LABELS[cat] ?? cat
 }
 
 // ── Main component ────────────────────────────────────────
@@ -437,7 +423,7 @@ export default function GiftsClient() {
 
   return (
     <div className="min-h-screen" style={{ background: '#FBF2E8' }}>
-      {/* ── Hero ──────────────────────────────────────────────── */}
+      {/* ── Hero ── */}
       <PageHero
         src="/images/book2.png"
         eyebrow="Com amor"
@@ -446,12 +432,12 @@ export default function GiftsClient() {
         objectPosition="bottom"
       />
 
-      {/* ── PIX + Lua de Mel callout ──────────────────────────── */}
+      {/* ── PIX + Lua de Mel callout ── */}
       <div style={{ background: 'linear-gradient(180deg, #FBF2E8 0%, #F4E5D0 100%)' }}>
         <PIXSection />
 
         <AnimatedSection>
-          <div className="max-w-4xl mx-auto px-5 pt-6 pb-2">
+          <div className="max-w-5xl mx-auto px-5 pt-6 pb-2">
             <div
               className="rounded-xl px-6 py-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-5"
               style={{
@@ -465,7 +451,7 @@ export default function GiftsClient() {
                   Lua de mel na Bahia — Morro de São Paulo
                 </p>
                 <p className="text-[0.65rem] mt-0.5" style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50' }}>
-                  Presentes de experiência que viram memórias: passeios de escuna, mergulhos, jantares e muito mais.
+                  Presenteie com experiências que viram memórias: passeios, mergulhos, jantares e muito mais.
                 </p>
               </div>
               <button
@@ -485,7 +471,7 @@ export default function GiftsClient() {
         </AnimatedSection>
       </div>
 
-      {/* ── Sticky filter bar ─────────────────────────────────── */}
+      {/* ── Sticky filter bar ── */}
       <div
         className="sticky top-0 z-30 px-4 py-3"
         style={{
@@ -494,7 +480,7 @@ export default function GiftsClient() {
           borderBottom: '1px solid rgba(200,146,74,0.12)',
         }}
       >
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-3">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row gap-3">
           <div className="relative sm:max-w-xs w-full">
             <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm" style={{ color: '#C8924A' }}>🔍</span>
             <input
@@ -522,29 +508,24 @@ export default function GiftsClient() {
                   boxShadow: category === cat ? '0 2px 10px rgba(200,146,74,0.28)' : 'none',
                 }}
               >
-                {cat === 'Lua de Mel' ? '🌊 Lua de Mel' : cat}
+                {catLabel(cat)}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── Mosaic grid ───────────────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-4 py-10 pb-28">
+      {/* ── Grid ── */}
+      <div className="max-w-5xl mx-auto px-4 py-10 pb-28">
         {filtered.length > 0 ? (
-          <div className="columns-2 md:columns-3 xl:columns-4 gap-4">
-            {filtered.map((gift) => {
-              const tall = !!(gift.featured || gift.category === 'Lua de Mel')
-              return (
-                <div key={gift.id} style={{ breakInside: 'avoid', marginBottom: '1rem' }}>
-                  <GiftCard
-                    gift={gift}
-                    tall={tall}
-                    onBuy={() => openPayment(gift)}
-                  />
-                </div>
-              )
-            })}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filtered.map((gift) => (
+              <GiftCard
+                key={gift.id}
+                gift={gift}
+                onBuy={() => openPayment(gift)}
+              />
+            ))}
           </div>
         ) : (
           <div className="text-center py-24">
@@ -558,7 +539,7 @@ export default function GiftsClient() {
         )}
       </div>
 
-      {/* ── Payment modal ─────────────────────────────────────── */}
+      {/* ── Payment modal ── */}
       <AnimatePresence>
         {payingGift && (
           <PaymentModal
@@ -568,7 +549,7 @@ export default function GiftsClient() {
         )}
       </AnimatePresence>
 
-      {/* ── Error toast ───────────────────────────────────────── */}
+      {/* ── Error toast ── */}
       <AnimatePresence>
         {toast && (
           <motion.div
@@ -604,91 +585,82 @@ export default function GiftsClient() {
 // ── Gift Card ─────────────────────────────────────────────
 interface GiftCardProps {
   gift: Gift
-  tall?: boolean
   onBuy: () => void
 }
 
-function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
+function GiftCard({ gift, onBuy }: GiftCardProps) {
   const [hovered, setHovered] = useState(false)
   const isLuaMel = gift.category === 'Lua de Mel'
-  const isSymbolic = gift.id.startsWith('simbolico')
+  const isSymbolic = gift.category === 'Simbólico'
+
+  const badgeLabel = isLuaMel ? '🌊 Lua de Mel' : isSymbolic ? '🎁 Simbólico' : gift.category
+  const badgeBg = isLuaMel
+    ? 'rgba(26,16,10,0.75)'
+    : isSymbolic
+    ? 'rgba(196,103,58,0.82)'
+    : 'rgba(200,146,74,0.82)'
 
   return (
     <motion.div
-      className="group flex flex-col rounded-2xl overflow-hidden cursor-pointer"
+      className="flex flex-col rounded-2xl overflow-hidden cursor-pointer"
       style={{
         background: '#fff',
-        border: `1px solid ${isLuaMel ? 'rgba(200,146,74,0.28)' : isSymbolic ? 'rgba(196,103,58,0.22)' : 'rgba(200,146,74,0.14)'}`,
+        border: `1px solid ${hovered ? 'rgba(200,146,74,0.35)' : 'rgba(200,146,74,0.14)'}`,
         boxShadow: hovered
-          ? '0 20px 56px rgba(200,146,74,0.22), 0 0 0 1.5px rgba(200,146,74,0.28)'
-          : isLuaMel
-          ? '0 6px 24px rgba(200,146,74,0.1)'
-          : '0 2px 14px rgba(26,16,10,0.06)',
-        transform: hovered ? 'translateY(-5px)' : 'none',
-        transition: 'all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1)',
+          ? '0 16px 48px rgba(200,146,74,0.2), 0 0 0 1px rgba(200,146,74,0.22)'
+          : '0 2px 12px rgba(26,16,10,0.06)',
+        transform: hovered ? 'translateY(-4px)' : 'none',
+        transition: 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
       }}
       onClick={onBuy}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image */}
-      <div
-        className="relative overflow-hidden flex-shrink-0"
-        style={{ height: tall ? '210px' : '155px' }}
-      >
+      {/* Image — fixed aspect ratio */}
+      <div className="relative overflow-hidden" style={{ paddingBottom: '65%' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={gift.image}
           alt={gift.name}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full"
           style={{
-            transform: hovered ? 'scale(1.08)' : 'scale(1)',
-            transition: 'transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            objectFit: gift.imageFit ?? 'cover',
+            objectPosition: 'center',
+            transform: hovered ? 'scale(1.07)' : 'scale(1)',
+            transition: 'transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)',
           }}
         />
-        {/* Gradient */}
+        {/* Gradient overlay */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(180deg, rgba(26,16,10,0.08) 0%, transparent 35%, rgba(26,16,10,0.48) 100%)',
-            opacity: hovered ? 1 : 0.7,
-            transition: 'opacity 0.35s',
+            background: 'linear-gradient(180deg, rgba(26,16,10,0.06) 0%, transparent 30%, rgba(26,16,10,0.52) 100%)',
           }}
         />
-        {hovered && (
-          <div
-            className="absolute inset-0"
-            style={{ background: 'linear-gradient(180deg, transparent 50%, rgba(196,103,58,0.22) 100%)' }}
-          />
-        )}
 
         {/* Category badge */}
         <div className="absolute top-2.5 left-2.5">
           <span
-            className="text-[0.44rem] px-2 py-0.5 rounded-full tracking-[0.16em] uppercase"
+            className="text-[0.44rem] px-2 py-0.5 rounded-full tracking-[0.14em] uppercase"
             style={{
-              background: isLuaMel
-                ? 'rgba(26,16,10,0.75)'
-                : isSymbolic
-                ? 'rgba(196,103,58,0.8)'
-                : 'rgba(200,146,74,0.82)',
+              background: badgeBg,
               color: '#FBF2E8',
               fontFamily: 'var(--font-montserrat)',
               backdropFilter: 'blur(6px)',
             }}
           >
-            {isLuaMel ? '🌊 Lua de Mel' : isSymbolic ? '✦ Simbólico' : gift.category}
+            {badgeLabel}
           </span>
         </div>
 
-        {/* Price on image — bottom right */}
+        {/* Price — bottom right */}
         <div className="absolute bottom-2.5 right-2.5">
           <span
-            className="text-lg font-light"
+            className="text-base font-light"
             style={{
               fontFamily: 'var(--font-cormorant)',
-              color: '#FBF2E8',
-              textShadow: '0 1px 8px rgba(26,16,10,0.7)',
+              color: '#fff',
+              textShadow: '0 1px 8px rgba(26,16,10,0.8)',
             }}
           >
             {formatBRL(gift.price)}
@@ -697,24 +669,24 @@ function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col p-4 gap-2.5">
+      <div className="flex flex-col flex-1 p-3.5 gap-2">
         <h3
-          className="text-base md:text-lg font-light leading-tight"
+          className="text-[1rem] font-light leading-snug"
           style={{ fontFamily: 'var(--font-cormorant)', color: '#2A1A0F' }}
         >
           {gift.name}
         </h3>
         <p
-          className="text-[0.62rem] leading-relaxed"
+          className="text-[0.6rem] leading-relaxed flex-1"
           style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50' }}
         >
           {gift.description}
         </p>
 
         {/* CTA */}
-        <div className="pt-2 mt-auto flex flex-col gap-2" style={{ borderTop: '1px solid rgba(200,146,74,0.1)' }}>
+        <div className="pt-2.5 mt-auto flex flex-col gap-1.5" style={{ borderTop: '1px solid rgba(200,146,74,0.1)' }}>
           <div
-            className="w-full py-2 rounded-lg flex items-center justify-center gap-1.5 text-[0.55rem] tracking-[0.18em] uppercase transition-all duration-300"
+            className="w-full py-2 rounded-lg flex items-center justify-center gap-1.5 text-[0.55rem] tracking-[0.16em] uppercase transition-all duration-300"
             style={{
               background: hovered
                 ? 'linear-gradient(135deg, #C8924A, #C4673A)'
@@ -722,28 +694,32 @@ function GiftCard({ gift, tall, onBuy }: GiftCardProps) {
               color: hovered ? '#FBF2E8' : '#C8924A',
               fontFamily: 'var(--font-montserrat)',
               border: `1px solid ${hovered ? 'transparent' : 'rgba(200,146,74,0.2)'}`,
-              boxShadow: hovered ? '0 3px 14px rgba(200,146,74,0.28)' : 'none',
+              boxShadow: hovered ? '0 3px 12px rgba(200,146,74,0.28)' : 'none',
             }}
           >
             <span>Dar este presente</span>
-            <span style={{ opacity: hovered ? 1 : 0.6 }}>→</span>
+            <span style={{ opacity: hovered ? 1 : 0.5 }}>→</span>
           </div>
 
-          {/* Payment options hint */}
-          <div className="flex items-center justify-center gap-2">
+          {/* Payment hint */}
+          <div className="flex items-center justify-center gap-1.5">
             <span
-              className="text-[0.44rem] tracking-[0.12em] uppercase"
-              style={{ color: 'rgba(138,106,80,0.6)', fontFamily: 'var(--font-montserrat)' }}
+              className="text-[0.42rem] tracking-[0.1em] uppercase"
+              style={{ color: 'rgba(138,106,80,0.55)', fontFamily: 'var(--font-montserrat)' }}
             >
               PIX
             </span>
-            <span style={{ color: 'rgba(138,106,80,0.3)', fontSize: '0.5rem' }}>·</span>
-            <span
-              className="text-[0.44rem] tracking-[0.12em] uppercase"
-              style={{ color: 'rgba(138,106,80,0.6)', fontFamily: 'var(--font-montserrat)' }}
-            >
-              Cartão em até {Math.max(1, Math.min(12, Math.floor(gift.price / 5)))}x
-            </span>
+            {gift.price >= 100 && (
+              <>
+                <span style={{ color: 'rgba(138,106,80,0.3)', fontSize: '0.45rem' }}>·</span>
+                <span
+                  className="text-[0.42rem] tracking-[0.1em] uppercase"
+                  style={{ color: 'rgba(138,106,80,0.55)', fontFamily: 'var(--font-montserrat)' }}
+                >
+                  Cartão em até {Math.min(12, Math.floor(gift.price / 50))}x
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>
