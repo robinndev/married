@@ -484,13 +484,12 @@ export default function GiftsClient() {
       >
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row gap-3">
           <div className="relative sm:max-w-xs w-full">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm" style={{ color: '#C8924A' }}>🔍</span>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar..."
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl text-sm transition-colors"
               style={inputStyle}
               onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.5)')}
               onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.22)')}
