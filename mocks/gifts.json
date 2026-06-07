@@ -13,7 +13,7 @@
     "name": "Catamarã",
     "description": "Tarde a bordo de um catamarã navegando pelo litoral baiano, com open bar, música e paradas nas piscinas naturais.",
     "price": 300,
-    "image": "https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1b3uJkynzCJ6f3LntacdFATK9KZle1o6dA&s",
     "category": "Lua de Mel",
     "purchased": false,
     "featured": true
@@ -51,7 +51,7 @@
     "name": "Passeio de Quadriciclo",
     "description": "Aventura de quadriciclo pelas trilhas e dunas da Bahia, com paradas para banho e vistas incríveis.",
     "price": 250,
-    "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpkum3TT-uMWla_5On3wv-rvLQ7E65MBozDw&s",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -60,7 +60,7 @@
     "name": "Drinks no Pôr do Sol",
     "description": "Dois drinks tropicais gelados assistindo o sol se por sobre o mar da Bahia. Impossível ser mais romântico.",
     "price": 90,
-    "image": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://i.pinimg.com/736x/da/87/c9/da87c92f15bb7cb9f3dcccb54464eec1.jpg",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -78,7 +78,7 @@
     "name": "Jantar Especial com Vista pro Mar",
     "description": "Um jantar memorável no restaurante mais bonito de Morro de São Paulo, com mesa privilegiada de frente para o oceano.",
     "price": 200,
-    "image": "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://www.salvadordabahia.com/wp-content/uploads/2017/12/soho-marina-4-500x500.jpg",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -87,7 +87,7 @@
     "name": "Sobremesa Típica",
     "description": "Uma sobremesa baiana típica para dois — cocada, quindim ou o famoso pudim da praia. Simples e delicioso.",
     "price": 75,
-    "image": "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://backend-18085538458.southamerica-east1.run.app/assets/6af72386-506d-4c4d-b36f-c85a873bf878.jpg?width=600&&format=webp",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -96,7 +96,7 @@
     "name": "Macarrão com Camarão",
     "description": "O prato mais pedido do litoral baiano: macarrão fresco com camarão na manteiga de garrafa, para dois.",
     "price": 180,
-    "image": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://renata.com.br/images/receitas/196/renata-imagem-receitas-macarrao-com-camarao-ao-molho-branco-share.jpg",
     "category": "Lua de Mel",
     "purchased": false
   },
@@ -105,7 +105,7 @@
     "name": "Jogo de Panelas Premium",
     "description": "Conjunto de 5 panelas antiaderentes de alta qualidade, perfeito para a nova vida a dois.",
     "price": 450,
-    "image": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://casaerotina.com.br/wp-content/uploads/2024/07/SuccoGXA-scaled-1-e1716923320824.jpeg",
     "category": "Cozinha",
     "purchased": false,
     "featured": true
@@ -133,7 +133,7 @@
     "name": "Conjunto de Toalhas Felpudas",
     "description": "Kit com 4 toalhas de banho e 4 de rosto, algodão 100% premium.",
     "price": 220,
-    "image": "https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://www.ecompletocdn.com.br/i/fp/1926/1586214_2_1754924042.jpg",
     "category": "Banheiro",
     "purchased": false
   },
@@ -142,7 +142,7 @@
     "name": "Mixer Vertical Profissional",
     "description": "Mixer com 12 velocidades, copo medidor e suporte inox. Ideal para smoothies e sopas.",
     "price": 290,
-    "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpPqhLf_OpWv2LhLCm6sdbqC9Pwmu1hKZYng&s",
     "category": "Cozinha",
     "purchased": false
   },
@@ -187,7 +187,7 @@
     "name": "Kit Fondue Completo",
     "description": "Conjunto de fondue em ferro fundido com rechaud, garfinhos e manual de receitas.",
     "price": 280,
-    "image": "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxuKFp9JMbq31kI7LuT_j7iEECE-tY8z0Nlg&s",
     "category": "Lazer",
     "purchased": false
   },
@@ -205,7 +205,7 @@
     "name": "Almofadas Decorativas Premium",
     "description": "Kit com 4 almofadas em veludo com enchimento de fibra siliconada. Cores neutras.",
     "price": 200,
-    "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP6cgi4_e65G5YXgZk5uGSJblIGJ-fixbjPQ&s",
     "category": "Sala",
     "purchased": false
   },
@@ -249,11 +249,10 @@
   },
   {
     "id": "simbolico-iluminacao",
-    "name": "Iluminação",
+    "name": "Iluminação Divina",
     "description": "O novo apartamento precisa de luz. Literalmente. Qualquer ajuda é muito bem-vinda.",
     "price": 1000,
-    "image": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
-    "category": "Simbólico",
+    "image": "https://img.pikbest.com/backgrounds/20250729/spiritual-awakening-person-contemplating-divine-light_11808957.jpg!w700wp",
     "purchased": false
   },
   {
@@ -261,8 +260,7 @@
     "name": "O Inesperado",
     "description": "Surpresa total. Nem o casal sabe o que vai acontecer com esse dinheiro. Confia.",
     "price": 5000,
-    "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=80",
-    "category": "Simbólico",
+    "image": "https://cdn.folhape.com.br/img/pc/1100/1/dn_arquivo/2018/12/meme-do-pikachu-surpreso-og.jpg",
     "purchased": false,
     "featured": true
   },
@@ -271,7 +269,7 @@
     "name": "Ajude a pagar o cartão",
     "description": "O casamento foi lindo. A fatura chegou. A bondade nunca é demais.",
     "price": 500,
-    "image": "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOVTrvqyJGoArBhPVXdMkpZqyzEs5pwUZ6OA&s",
     "category": "Simbólico",
     "purchased": false
   },

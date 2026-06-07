@@ -28,20 +28,22 @@ const inputStyle = {
 function MpBadge({ large }: { large?: boolean }) {
   return (
     <div
-      className="inline-flex items-center gap-1.5 rounded-full"
+      className="inline-flex items-center gap-2 rounded-full shrink-0"
       style={{
-        background: 'rgba(0,158,227,0.12)',
-        border: '1px solid rgba(0,158,227,0.3)',
-        padding: large ? '6px 14px' : '4px 10px',
+        background: 'linear-gradient(135deg, #00186A 0%, #009EE3 100%)',
+        padding: large ? '7px 16px' : '5px 12px',
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="https://images.seeklogo.com/logo-png/19/2/mercado-pago-logo-png_seeklogo-198430.png"
-        alt="Mercado Pago"
-        width={large ? 72 : 54}
-        style={{ objectFit: 'contain' }}
-      />
+      <svg width={large ? 14 : 12} height={large ? 14 : 12} viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="12" fill="white" fillOpacity="0.2" />
+        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span
+        className="text-white font-semibold uppercase tracking-widest"
+        style={{ fontSize: large ? '0.65rem' : '0.55rem', fontFamily: 'var(--font-montserrat)' }}
+      >
+        Mercado Pago
+      </span>
     </div>
   )
 }

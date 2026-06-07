@@ -1,26 +1,28 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { PIX_KEY, PIX_DISPLAY, PIX_NAME } from '@/constants'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
 function MpBadge() {
   return (
     <div
-      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full shrink-0"
       style={{
-        background: 'rgba(0,158,227,0.15)',
-        border: '1px solid rgba(0,158,227,0.35)',
+        background: 'linear-gradient(135deg, #00186A 0%, #009EE3 100%)',
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="https://images.seeklogo.com/logo-png/19/2/mercado-pago-logo-png_seeklogo-198430.png"
-        alt="Mercado Pago"
-        width={80}
-        style={{ objectFit: 'contain' }}
-      />
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="12" fill="white" fillOpacity="0.2" />
+        <path d="M7 12.5l3.5 3.5 6.5-7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span
+        className="text-[0.6rem] tracking-widest uppercase text-white font-semibold"
+        style={{ fontFamily: 'var(--font-montserrat)' }}
+      >
+        Mercado Pago
+      </span>
     </div>
   )
 }
@@ -42,26 +44,29 @@ export default function PIXSection() {
     <AnimatedSection>
       <div className="max-w-4xl mx-auto px-5 pt-12 pb-2">
         <div
-          className="relative rounded-2xl overflow-hidden px-8 py-9 md:py-11"
+          className="relative rounded-2xl overflow-hidden px-8 py-10 md:py-12"
           style={{
             background: 'linear-gradient(135deg, #1A100A 0%, #2E1A0E 60%, #3A200E 100%)',
-            border: '1px solid rgba(200,146,74,0.22)',
-            boxShadow: '0 12px 48px rgba(26,16,10,0.22)',
+            border: '1px solid rgba(200,146,74,0.25)',
+            boxShadow: '0 16px 56px rgba(26,16,10,0.28)',
           }}
         >
           {/* Ambient glow */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
-              background: 'radial-gradient(ellipse at 30% 50%, rgba(200,146,74,0.14) 0%, transparent 60%)',
+              background: 'radial-gradient(ellipse at 25% 60%, rgba(200,146,74,0.12) 0%, transparent 65%)',
             }}
           />
           <div className="divider-sunset absolute top-0 inset-x-0" />
 
-          <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8 md:gap-14">
+
             {/* Left: text */}
-            <div className="flex flex-col gap-4 flex-1">
-              <div className="flex flex-col gap-1.5">
+            <div className="flex flex-col gap-5 flex-1 min-w-0">
+
+              {/* Header */}
+              <div className="flex flex-col gap-1">
                 <p
                   className="text-[0.5rem] tracking-[0.45em] uppercase"
                   style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
@@ -75,53 +80,61 @@ export default function PIXSection() {
                   PIX Surpresa
                 </h3>
                 <p
-                  className="text-sm leading-relaxed mt-1"
-                  style={{ color: 'rgba(226,192,154,0.75)', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
+                  className="text-sm leading-relaxed mt-0.5"
+                  style={{ color: 'rgba(226,192,154,0.7)', fontFamily: 'var(--font-cormorant)', fontStyle: 'italic' }}
                 >
                   Prefere escolher o valor você mesmo? Manda um PIX com carinho —
-                  qualquer quantia é recebida com muita gratidão e amor.
+                  qualquer quantia é recebida com muita gratidão.
                 </p>
               </div>
 
               {/* PIX Key card */}
               <div
-                className="rounded-xl px-5 py-4 flex flex-col gap-3"
-                style={{ background: 'rgba(200,146,74,0.07)', border: '1px solid rgba(200,146,74,0.2)' }}
+                className="rounded-xl overflow-hidden"
+                style={{
+                  border: '1px solid rgba(200,146,74,0.25)',
+                }}
               >
-                <div className="flex items-center justify-between gap-3 flex-wrap">
-                  <div className="flex flex-col gap-0.5">
-                    <p
-                      className="text-[0.48rem] tracking-[0.3em] uppercase"
-                      style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
-                    >
-                      E-mail · Chave PIX
-                    </p>
-                    <p
-                      className="text-lg font-light tracking-wide break-all"
-                      style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
-                    >
-                      {PIX_DISPLAY}
-                    </p>
-                  </div>
+                {/* Top: badge strip */}
+                <div
+                  className="flex items-center justify-between gap-3 px-5 py-3"
+                  style={{ background: 'rgba(200,146,74,0.06)', borderBottom: '1px solid rgba(200,146,74,0.12)' }}
+                >
+                  <p
+                    className="text-[0.55rem] tracking-[0.3em] uppercase"
+                    style={{ color: '#8A6A50', fontFamily: 'var(--font-montserrat)' }}
+                  >
+                    Chave PIX · E-mail
+                  </p>
                   <MpBadge />
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(200,146,74,0.5)' }} />
+                {/* Bottom: key + name */}
+                <div
+                  className="flex flex-col gap-1 px-5 py-4"
+                  style={{ background: 'rgba(200,146,74,0.04)' }}
+                >
                   <p
-                    className="text-xs"
-                    style={{ color: 'rgba(226,192,154,0.7)', fontFamily: 'var(--font-montserrat)' }}
+                    className="text-base md:text-lg font-light break-all leading-snug"
+                    style={{ color: '#E2C09A', fontFamily: 'var(--font-cormorant)' }}
+                  >
+                    {PIX_DISPLAY}
+                  </p>
+                  <p
+                    className="text-[0.65rem] tracking-wide"
+                    style={{ color: 'rgba(200,146,74,0.6)', fontFamily: 'var(--font-montserrat)' }}
                   >
                     {PIX_NAME}
                   </p>
                 </div>
               </div>
 
+              {/* CTA button */}
               <motion.button
                 whileTap={{ scale: 0.96 }}
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.02 }}
                 onClick={copy}
-                className="self-start px-8 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-all duration-300"
+                className="self-start px-8 py-3 text-[0.65rem] tracking-[0.2em] uppercase rounded-xl transition-colors duration-300 flex items-center gap-2"
                 style={{
                   background: copied
                     ? 'linear-gradient(135deg, #5A8A4A, #3A6A2E)'
@@ -133,13 +146,23 @@ export default function PIXSection() {
                     : '0 4px 20px rgba(200,146,74,0.3)',
                 }}
               >
-                {copied ? '✓ Chave copiada!' : 'Copiar Chave PIX'}
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={copied ? 'copied' : 'copy'}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {copied ? '✓ Chave copiada!' : 'Copiar Chave PIX'}
+                  </motion.span>
+                </AnimatePresence>
               </motion.button>
             </div>
 
-            {/* Right: decorative */}
-            <div className="hidden md:flex flex-col items-center gap-3 opacity-30">
-              <div className="text-6xl" style={{ color: '#E2C09A' }}>♥</div>
+            {/* Right: decorative heart */}
+            <div className="hidden md:flex flex-col items-center justify-center gap-2 opacity-20 select-none">
+              <div className="text-7xl leading-none" style={{ color: '#E2C09A' }}>♥</div>
             </div>
           </div>
         </div>
