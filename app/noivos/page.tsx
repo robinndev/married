@@ -45,8 +45,8 @@ function NucleusBadge({ nucleus }: { nucleus?: string }) {
         color: s.color,
         border: `1px solid ${s.border}`,
         fontFamily: 'var(--font-montserrat)',
-        fontSize: '0.44rem',
-        letterSpacing: '0.14em',
+        fontSize: '0.52rem',
+        letterSpacing: '0.12em',
         padding: '2px 8px',
         borderRadius: 999,
         textTransform: 'uppercase',
@@ -235,7 +235,7 @@ function EditModal({ guest, onClose, onSave }: { guest: Guest; onClose: () => vo
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center px-5"
-      style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
+      style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)' }}
       onClick={onClose}
     >
       <motion.form
@@ -295,7 +295,7 @@ function ConfirmDialog({ guest, onConfirm, onCancel }: { guest: Guest; onConfirm
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center px-5"
-      style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
+      style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)' }}
       onClick={onCancel}
     >
       <motion.div
@@ -305,22 +305,24 @@ function ConfirmDialog({ guest, onConfirm, onCancel }: { guest: Guest; onConfirm
         style={{ background: '#1E100A', border: '1px solid rgba(196,103,58,0.3)', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <span style={{ fontSize: '2rem' }}>⚠</span>
+        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(196,103,58,0.15)', border: '1px solid rgba(196,103,58,0.3)' }}>
+          <span style={{ fontSize: '1.3rem' }}>⚠</span>
+        </div>
         <div>
-          <p className="text-white text-lg font-light mb-1" style={{ fontFamily: 'var(--font-cormorant)' }}>Remover confirmação?</p>
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}>
+          <p className="text-white text-xl font-light mb-1.5" style={{ fontFamily: 'var(--font-cormorant)' }}>Remover confirmação?</p>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}>
             {hasGroup
               ? `${guest.name} e ${guest.companions!.length} acompanhante(s) voltarão para pendentes.`
               : `${guest.name} voltará para a lista de pendentes.`}
           </p>
         </div>
         <div className="flex gap-3 w-full">
-          <button onClick={onCancel} className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl"
+          <button onClick={onCancel} className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl transition-opacity hover:opacity-70"
             style={{ border: '1px solid rgba(200,146,74,0.2)', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}>
             Cancelar
           </button>
           <button onClick={onConfirm} className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl"
-            style={{ background: 'rgba(196,103,58,0.25)', color: '#C4673A', border: '1px solid rgba(196,103,58,0.3)', fontFamily: 'var(--font-montserrat)' }}>
+            style={{ background: 'rgba(196,103,58,0.2)', color: '#E07850', border: '1px solid rgba(196,103,58,0.35)', fontFamily: 'var(--font-montserrat)' }}>
             Remover
           </button>
         </div>
@@ -353,15 +355,15 @@ function GuestCard({
   if (isCompanion) {
     return (
       <div
-        className="rounded-xl px-4 py-3 flex flex-wrap items-center gap-x-3 gap-y-2"
+        className="rounded-xl px-4 py-3.5 flex flex-wrap items-center gap-x-3 gap-y-2"
         style={{
           background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          borderLeft: '3px solid rgba(200,146,74,0.5)',
+          border: '1px solid rgba(255,255,255,0.07)',
+          borderLeft: '3px solid rgba(200,146,74,0.4)',
         }}
       >
         <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#6FCF5E' }} />
-        <span style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.92)', fontSize: '1rem', fontWeight: 300 }}>
+        <span style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.9)', fontSize: '1rem', fontWeight: 300 }}>
           {guest.name}
         </span>
         {guest.nucleus && <NucleusBadge nucleus={guest.nucleus} />}
@@ -369,23 +371,23 @@ function GuestCard({
           className="flex items-center gap-1 px-3 py-1 rounded-full flex-shrink-0"
           style={{
             fontFamily: 'var(--font-montserrat)',
-            fontSize: '0.52rem',
-            letterSpacing: '0.12em',
-            background: 'rgba(200,146,74,0.18)',
+            fontSize: '0.54rem',
+            letterSpacing: '0.1em',
+            background: 'rgba(200,146,74,0.15)',
             color: '#E8C070',
-            border: '1px solid rgba(200,146,74,0.45)',
+            border: '1px solid rgba(200,146,74,0.35)',
             whiteSpace: 'nowrap',
           }}
         >
-          ↳ junto com <strong style={{ color: '#F0D090' }}>{leaderName}</strong>
+          junto com <strong style={{ color: '#F0D090' }}>{leaderName}</strong>
         </span>
         <span
-          className="ml-auto px-2.5 py-1 rounded-full text-[0.44rem] tracking-[0.16em] uppercase"
+          className="ml-auto px-2.5 py-1 rounded-full text-[0.5rem] tracking-[0.14em] uppercase"
           style={{
             fontFamily: 'var(--font-montserrat)',
-            background: 'rgba(111,207,94,0.12)',
+            background: 'rgba(111,207,94,0.1)',
             color: '#6FCF5E',
-            border: '1px solid rgba(111,207,94,0.28)',
+            border: '1px solid rgba(111,207,94,0.25)',
             whiteSpace: 'nowrap',
           }}
         >
@@ -396,33 +398,34 @@ function GuestCard({
   }
 
   // ── Primary guest card ────────────────────────────────────
-  const accentColor = guest.confirmed ? '#6FCF5E' : 'rgba(200,146,74,0.35)'
-  const accentBorder = guest.confirmed ? 'rgba(111,207,94,0.5)' : 'rgba(200,146,74,0.22)'
+  const isConfirmed = guest.confirmed
+  const accentBorder = isConfirmed ? 'rgba(111,207,94,0.5)' : 'rgba(200,146,74,0.22)'
+  const dotColor = isConfirmed ? '#6FCF5E' : 'rgba(200,146,74,0.5)'
 
   return (
     <div
       className="rounded-xl overflow-hidden transition-all duration-200"
       style={{
-        background: 'rgba(255,255,255,0.035)',
-        border: '1px solid rgba(255,255,255,0.08)',
+        background: 'rgba(255,255,255,0.03)',
+        border: '1px solid rgba(255,255,255,0.07)',
         borderLeft: `3px solid ${accentBorder}`,
       }}
     >
-      {/* ── Main area — click to expand ──────────────────── */}
+      {/* ── Main row ─────────────────────────────────────── */}
       <div
         onClick={hasCompanions ? onToggleExpand : undefined}
-        className="px-4 py-3.5 flex flex-col gap-2"
+        className="px-4 py-4 flex flex-col gap-2.5"
         style={{ cursor: hasCompanions ? 'pointer' : 'default' }}
         onMouseEnter={(e) => { if (hasCompanions) (e.currentTarget.style.background = 'rgba(255,255,255,0.02)') }}
         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
       >
-        {/* Row 1: dot + name + badges + expand + actions */}
+        {/* Row 1: status dot · name · nucleus badge · status pill · [actions] */}
         <div className="flex items-center gap-2.5 flex-wrap">
-          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: accentColor }} />
+          <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: dotColor }} />
 
           <span
             className="font-light"
-            style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.92)', fontSize: '1.05rem' }}
+            style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.93)', fontSize: '1.1rem' }}
           >
             {guest.name}
           </span>
@@ -430,31 +433,31 @@ function GuestCard({
           {guest.nucleus && <NucleusBadge nucleus={guest.nucleus} />}
 
           <span
-            className="px-2.5 py-0.5 rounded-full text-[0.44rem] tracking-[0.16em] uppercase flex-shrink-0"
+            className="px-2.5 py-0.5 rounded-full text-[0.5rem] tracking-[0.14em] uppercase flex-shrink-0"
             style={{
               fontFamily: 'var(--font-montserrat)',
-              background: guest.confirmed ? 'rgba(111,207,94,0.14)' : 'rgba(200,146,74,0.1)',
-              color: guest.confirmed ? '#6FCF5E' : 'rgba(200,146,74,0.8)',
-              border: `1px solid ${guest.confirmed ? 'rgba(111,207,94,0.3)' : 'rgba(200,146,74,0.22)'}`,
+              background: isConfirmed ? 'rgba(111,207,94,0.12)' : 'rgba(200,146,74,0.1)',
+              color: isConfirmed ? '#6FCF5E' : 'rgba(200,146,74,0.8)',
+              border: `1px solid ${isConfirmed ? 'rgba(111,207,94,0.28)' : 'rgba(200,146,74,0.2)'}`,
               whiteSpace: 'nowrap',
             }}
           >
-            {guest.confirmed ? '✓ Confirmado' : 'Pendente'}
+            {isConfirmed ? '✓ Confirmado' : 'Pendente'}
           </span>
 
-          {/* Spacer + actions (stop propagation so clicks don't toggle) */}
+          {/* Actions (stop propagation) */}
           <div className="ml-auto flex items-center gap-2 flex-shrink-0" onClick={(e) => e.stopPropagation()}>
-            {guest.confirmed ? (
+            {isConfirmed ? (
               <>
                 <button
                   onClick={onEdit}
                   disabled={actionLoading}
-                  className="px-3 py-1 rounded-lg text-[0.46rem] tracking-[0.14em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
+                  className="px-3 py-1.5 rounded-lg text-[0.52rem] tracking-[0.12em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
                   style={{
                     cursor: 'pointer',
-                    background: 'rgba(200,146,74,0.12)',
+                    background: 'rgba(200,146,74,0.1)',
                     color: '#E0AD6A',
-                    border: '1px solid rgba(200,146,74,0.28)',
+                    border: '1px solid rgba(200,146,74,0.25)',
                     fontFamily: 'var(--font-montserrat)',
                     whiteSpace: 'nowrap',
                   }}
@@ -464,12 +467,12 @@ function GuestCard({
                 <button
                   onClick={onUnconfirm}
                   disabled={actionLoading}
-                  className="px-3 py-1 rounded-lg text-[0.46rem] tracking-[0.14em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
+                  className="px-3 py-1.5 rounded-lg text-[0.52rem] tracking-[0.12em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
                   style={{
                     cursor: 'pointer',
                     background: 'rgba(196,103,58,0.1)',
-                    color: 'rgba(230,130,90,0.95)',
-                    border: '1px solid rgba(196,103,58,0.28)',
+                    color: '#E07850',
+                    border: '1px solid rgba(196,103,58,0.25)',
                     fontFamily: 'var(--font-montserrat)',
                     whiteSpace: 'nowrap',
                   }}
@@ -481,12 +484,12 @@ function GuestCard({
               <button
                 onClick={onConfirm}
                 disabled={actionLoading}
-                className="px-3 py-1 rounded-lg text-[0.46rem] tracking-[0.14em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
+                className="px-3 py-1.5 rounded-lg text-[0.52rem] tracking-[0.12em] uppercase transition-all hover:opacity-80 disabled:opacity-30"
                 style={{
                   cursor: 'pointer',
                   background: 'rgba(111,207,94,0.1)',
                   color: '#6FCF5E',
-                  border: '1px solid rgba(111,207,94,0.28)',
+                  border: '1px solid rgba(111,207,94,0.25)',
                   fontFamily: 'var(--font-montserrat)',
                   whiteSpace: 'nowrap',
                 }}
@@ -497,34 +500,34 @@ function GuestCard({
 
             {hasCompanions && (
               <div
-                className="flex items-center gap-1 px-2 py-1 rounded-lg"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
                 style={{
-                  background: expanded ? 'rgba(200,146,74,0.18)' : 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(200,146,74,0.22)',
+                  background: expanded ? 'rgba(200,146,74,0.15)' : 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(200,146,74,0.2)',
                   color: 'rgba(200,146,74,0.85)',
                   fontFamily: 'var(--font-montserrat)',
-                  fontSize: '0.5rem',
-                  letterSpacing: '0.1em',
+                  fontSize: '0.52rem',
+                  letterSpacing: '0.08em',
                   userSelect: 'none',
                 }}
               >
-                <span style={{ display: 'inline-block', transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>▼</span>
+                <span style={{ display: 'inline-block', transition: 'transform 0.2s', transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)', fontSize: '0.5rem' }}>▼</span>
                 {companions.length} acomp.
               </div>
             )}
           </div>
         </div>
 
-        {/* Row 2: meta info (confirmed only) */}
-        {guest.confirmed && (
-          <div className="flex items-center gap-4 ml-5 flex-wrap">
-            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.62rem', color: 'rgba(255,255,255,0.55)' }}>
-              {formatPhone(guest.phone)}
+        {/* Row 2: meta — phone · total guests · date */}
+        {isConfirmed && (
+          <div className="flex items-center gap-5 ml-[18px] flex-wrap">
+            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)' }}>
+              📞 {formatPhone(guest.phone)}
             </span>
-            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.62rem', color: 'rgba(255,255,255,0.55)' }}>
-              {guest.totalGuests ?? 1} pessoa{(guest.totalGuests ?? 1) > 1 ? 's' : ''}
+            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.65rem', color: 'rgba(255,255,255,0.5)' }}>
+              👥 {guest.totalGuests ?? 1} pessoa{(guest.totalGuests ?? 1) > 1 ? 's' : ''}
             </span>
-            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.58rem', color: 'rgba(255,255,255,0.3)' }}>
+            <span style={{ fontFamily: 'var(--font-montserrat)', fontSize: '0.62rem', color: 'rgba(255,255,255,0.28)' }}>
               {formatDate(guest.confirmedAt)}
             </span>
           </div>
@@ -541,19 +544,20 @@ function GuestCard({
             transition={{ duration: 0.22, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', background: 'rgba(0,0,0,0.1)' }}>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.12)' }}>
               {companions.map((companion, i) => (
                 <div
                   key={companion.id}
-                  className="flex items-center gap-3 px-5 py-2.5"
+                  className="flex items-center gap-3 py-3"
                   style={{
+                    padding: '10px 20px 10px 36px',
                     borderBottom: i < companions.length - 1 ? '1px solid rgba(255,255,255,0.04)' : undefined,
-                    borderLeft: '2px solid rgba(200,146,74,0.25)',
-                    marginLeft: '1.25rem',
+                    borderLeft: '2px solid rgba(200,146,74,0.2)',
+                    marginLeft: '20px',
                   }}
                 >
                   <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'rgba(111,207,94,0.5)' }} />
-                  <span style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.65)', fontSize: '0.9rem', fontWeight: 300 }}>
+                  <span style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.65)', fontSize: '0.95rem', fontWeight: 300 }}>
                     {companion.name}
                   </span>
                   {companion.nucleus && <NucleusBadge nucleus={companion.nucleus} />}
@@ -563,6 +567,41 @@ function GuestCard({
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  )
+}
+
+// ── Stat Card ─────────────────────────────────────────────
+function StatCard({ label, value, sub, accent }: { label: string; value: string; sub?: string; accent?: string }) {
+  return (
+    <div
+      className="flex flex-col gap-1 rounded-2xl px-5 py-4"
+      style={{
+        background: 'rgba(255,255,255,0.035)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: 'inset 0 1px 0 rgba(200,146,74,0.06)',
+      }}
+    >
+      <p
+        className="text-[0.5rem] tracking-[0.35em] uppercase"
+        style={{ color: 'rgba(200,146,74,0.6)', fontFamily: 'var(--font-montserrat)' }}
+      >
+        {label}
+      </p>
+      <p
+        className="text-3xl font-light leading-none"
+        style={{ fontFamily: 'var(--font-cormorant)', color: accent ?? 'rgba(255,255,255,0.93)' }}
+      >
+        {value}
+      </p>
+      {sub && (
+        <p
+          className="text-[0.58rem]"
+          style={{ color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-montserrat)' }}
+        >
+          {sub}
+        </p>
+      )}
     </div>
   )
 }
@@ -577,7 +616,6 @@ function Dashboard({ guests }: { guests: Guest[] }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const countdown = useCountdown()
 
-  // Companion map: leaderId → companion guests
   const companionMap = useMemo(() => {
     const map: Record<string, Guest[]> = {}
     guests.filter((g) => g.groupLeaderId).forEach((g) => {
@@ -587,28 +625,24 @@ function Dashboard({ guests }: { guests: Guest[] }) {
     return map
   }, [guests])
 
-  // Guest lookup map for finding a leader by id
   const guestById = useMemo(() => {
     const map: Record<string, Guest> = {}
     guests.forEach((g) => { map[g.id] = g })
     return map
   }, [guests])
 
-  // Only primary guests (no groupLeaderId)
   const primaryGuests = useMemo(() => guests.filter((g) => !g.groupLeaderId), [guests])
   const confirmed = useMemo(() => primaryGuests.filter((g) => g.confirmed), [primaryGuests])
   const pending = useMemo(() => primaryGuests.filter((g) => !g.confirmed), [primaryGuests])
   const totalPeople = useMemo(() => confirmed.reduce((acc, g) => acc + (g.totalGuests ?? 1), 0), [confirmed])
   const pct = primaryGuests.length ? Math.round((confirmed.length / primaryGuests.length) * 100) : 0
 
-  // Search result item type — either a primary guest or a companion with its leader name
   type SearchItem =
     | { kind: 'primary'; guest: Guest }
     | { kind: 'companion'; guest: Guest; leaderName: string }
 
   const trimmedSearch = search.trim()
 
-  // When search is active: search ALL guests. When empty: filter by tab (primaries only).
   const listItems = useMemo<SearchItem[]>(() => {
     if (!trimmedSearch) {
       const base = filter === 'confirmed' ? confirmed : filter === 'pending' ? pending : primaryGuests
@@ -663,14 +697,6 @@ function Dashboard({ guests }: { guests: Guest[] }) {
     await updateGuestInfo(editing.id, data)
   }
 
-  // ── Stats pill data ───────────────────────────────────────
-  const statPills = [
-    { label: 'Confirmados', value: `${confirmed.length} de ${primaryGuests.length}` },
-    { label: 'Pendentes', value: String(pending.length) },
-    { label: 'Pessoas confirmadas', value: String(totalPeople) },
-    { label: 'Taxa', value: `${pct}%` },
-  ]
-
   return (
     <div
       className="min-h-screen"
@@ -679,30 +705,22 @@ function Dashboard({ guests }: { guests: Guest[] }) {
       {/* Ambient glow */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 25% 15%, rgba(200,146,74,0.09) 0%, transparent 55%)' }}
+        style={{ background: 'radial-gradient(ellipse at 20% 10%, rgba(200,146,74,0.1) 0%, transparent 55%)' }}
       />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pb-10 flex flex-col gap-5 pt-24">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-12 flex flex-col gap-6">
 
-        {/* ── Compact header card ─────────────────────────── */}
-        <div
-          className="rounded-2xl px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(200,146,74,0.2)',
-            boxShadow: '0 4px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(200,146,74,0.1)',
-          }}
-        >
-          {/* Title */}
-          <div className="flex flex-col gap-0.5">
+        {/* ── Header ──────────────────────────────────────── */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="flex flex-col gap-1">
             <p
-              className="text-[0.46rem] tracking-[0.55em] uppercase"
-              style={{ color: 'rgba(200,146,74,0.7)', fontFamily: 'var(--font-montserrat)' }}
+              className="text-[0.5rem] tracking-[0.5em] uppercase"
+              style={{ color: 'rgba(200,146,74,0.65)', fontFamily: 'var(--font-montserrat)' }}
             >
-              Painel dos Noivos · 01.08.2026 · Mairiporã, SP
+              Área exclusiva · 01.08.2026 · Mairiporã, SP
             </p>
             <h1
-              className="text-3xl sm:text-4xl font-light leading-tight"
+              className="text-4xl sm:text-5xl font-light leading-tight"
               style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.95)' }}
             >
               Natacha <span style={{ color: '#C8924A' }}>&</span> Mauricio
@@ -710,10 +728,16 @@ function Dashboard({ guests }: { guests: Guest[] }) {
           </div>
 
           {/* Countdown */}
-          <div className="flex items-center gap-5 flex-shrink-0">
+          <div
+            className="flex items-center gap-5 px-5 py-3 rounded-2xl flex-shrink-0 self-start sm:self-auto"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(200,146,74,0.2)',
+            }}
+          >
             {[{ v: pad(countdown.days), l: 'dias' }, { v: pad(countdown.hours), l: 'horas' }, { v: pad(countdown.minutes), l: 'min' }].map(({ v, l }, i) => (
               <div key={l} className="flex items-center gap-5">
-                {i > 0 && <div className="h-7 w-px" style={{ background: 'rgba(200,146,74,0.2)' }} />}
+                {i > 0 && <div className="h-6 w-px" style={{ background: 'rgba(200,146,74,0.2)' }} />}
                 <div className="flex flex-col items-center gap-0.5">
                   <span
                     className="text-3xl font-light leading-none tabular-nums"
@@ -722,8 +746,8 @@ function Dashboard({ guests }: { guests: Guest[] }) {
                     {v}
                   </span>
                   <span
-                    className="text-[0.4rem] tracking-[0.3em] uppercase"
-                    style={{ color: 'rgba(200,146,74,0.65)', fontFamily: 'var(--font-montserrat)' }}
+                    className="text-[0.42rem] tracking-[0.28em] uppercase"
+                    style={{ color: 'rgba(200,146,74,0.6)', fontFamily: 'var(--font-montserrat)' }}
                   >
                     {l}
                   </span>
@@ -733,56 +757,60 @@ function Dashboard({ guests }: { guests: Guest[] }) {
           </div>
         </div>
 
-        {/* ── Stat pills row ──────────────────────────────── */}
-        <div className="flex flex-wrap gap-2">
-          {statPills.map(({ label, value }) => (
-            <div
-              key={label}
-              className="flex items-center gap-2 px-4 py-2 rounded-full"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(200,146,74,0.18)',
-              }}
-            >
-              <span
-                className="text-[0.46rem] tracking-[0.3em] uppercase"
-                style={{ color: 'rgba(200,146,74,0.65)', fontFamily: 'var(--font-montserrat)' }}
-              >
-                {label}
-              </span>
-              <span
-                className="text-sm font-light"
-                style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.9)', fontSize: '1.1rem' }}
-              >
-                {value}
-              </span>
-            </div>
-          ))}
+        {/* Divider */}
+        <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(200,146,74,0.25), transparent)' }} />
 
-          {/* Progress bar pill */}
-          <div
-            className="flex items-center gap-3 px-4 py-2 rounded-full flex-1"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(200,146,74,0.18)',
-              minWidth: '160px',
-            }}
-          >
-            <span
-              className="text-[0.46rem] tracking-[0.3em] uppercase flex-shrink-0"
-              style={{ color: 'rgba(200,146,74,0.65)', fontFamily: 'var(--font-montserrat)' }}
-            >
-              Progresso
-            </span>
-            <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${pct}%` }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-                className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg, #C8924A, #C4673A)' }}
-              />
-            </div>
+        {/* ── Stats grid ──────────────────────────────────── */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <StatCard
+            label="Confirmados"
+            value={String(confirmed.length)}
+            sub={`de ${primaryGuests.length} convidados`}
+            accent="#6FCF5E"
+          />
+          <StatCard
+            label="Pendentes"
+            value={String(pending.length)}
+            sub="aguardando resposta"
+            accent="rgba(200,146,74,0.9)"
+          />
+          <StatCard
+            label="Pessoas"
+            value={String(totalPeople)}
+            sub="confirmadas no total"
+          />
+          <StatCard
+            label="Taxa"
+            value={`${pct}%`}
+            sub="de confirmação"
+            accent={pct >= 70 ? '#6FCF5E' : pct >= 40 ? '#E0AD6A' : '#E07850'}
+          />
+        </div>
+
+        {/* Progress bar */}
+        <div
+          className="rounded-2xl px-5 py-4 flex flex-col gap-2"
+          style={{
+            background: 'rgba(255,255,255,0.03)',
+            border: '1px solid rgba(255,255,255,0.07)',
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-[0.5rem] tracking-[0.35em] uppercase" style={{ color: 'rgba(200,146,74,0.6)', fontFamily: 'var(--font-montserrat)' }}>
+              Progresso das confirmações
+            </p>
+            <p className="text-[0.6rem]" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-montserrat)' }}>
+              {confirmed.length} / {primaryGuests.length}
+            </p>
+          </div>
+          <div className="h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${pct}%` }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
+              className="h-full rounded-full"
+              style={{ background: 'linear-gradient(90deg, #C8924A, #6FCF5E)' }}
+            />
           </div>
         </div>
 
@@ -794,9 +822,9 @@ function Dashboard({ guests }: { guests: Guest[] }) {
             border: '1px solid rgba(255,255,255,0.07)',
           }}
         >
-          {/* Toolbar: filter tabs + search in one row */}
+          {/* Toolbar */}
           <div
-            className="px-4 py-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
+            className="px-4 py-3.5 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
           >
             <div className="flex gap-1.5 flex-wrap">
@@ -804,50 +832,58 @@ function Dashboard({ guests }: { guests: Guest[] }) {
                 <button
                   key={f}
                   onClick={() => setFilter(f)}
-                  className="px-3 py-1.5 rounded-full text-[0.48rem] tracking-[0.18em] uppercase transition-all"
+                  className="px-4 py-1.5 rounded-full text-[0.52rem] tracking-[0.16em] uppercase transition-all"
                   style={{
                     background: filter === f ? 'linear-gradient(135deg, #C8924A, #C4673A)' : 'rgba(255,255,255,0.05)',
                     color: filter === f ? '#FBF2E8' : 'rgba(255,255,255,0.45)',
-                    border: `1px solid ${filter === f ? 'transparent' : 'rgba(255,255,255,0.1)'}`,
+                    border: `1px solid ${filter === f ? 'transparent' : 'rgba(255,255,255,0.09)'}`,
                     fontFamily: 'var(--font-montserrat)',
                   }}
                 >
                   {f === 'all'
-                    ? `Todos (${primaryGuests.length})`
+                    ? `Todos · ${primaryGuests.length}`
                     : f === 'confirmed'
-                    ? `Confirmados (${confirmed.length})`
-                    : `Pendentes (${pending.length})`}
+                    ? `Confirmados · ${confirmed.length}`
+                    : `Pendentes · ${pending.length}`}
                 </button>
               ))}
             </div>
 
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar convidado ou acompanhante..."
-              className="w-full sm:w-64 px-4 py-2 rounded-xl text-xs transition-colors"
-              style={{
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'rgba(255,255,255,0.88)',
-                fontFamily: 'var(--font-montserrat)',
-                outline: 'none',
-              }}
-              onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.5)')}
-              onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
-            />
+            <div className="relative w-full sm:w-64">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar convidado..."
+                className="w-full pl-9 pr-4 py-2.5 rounded-xl text-xs transition-colors"
+                style={{
+                  background: 'rgba(255,255,255,0.05)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  color: 'rgba(255,255,255,0.88)',
+                  fontFamily: 'var(--font-montserrat)',
+                  outline: 'none',
+                }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.45)')}
+                onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
+              />
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                ⌕
+              </span>
+            </div>
           </div>
 
-          {/* Cards */}
+          {/* List */}
           {listItems.length === 0 ? (
-            <div className="py-14 text-center">
-              <p className="text-2xl font-light" style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.3)' }}>
+            <div className="py-16 text-center">
+              <p className="text-3xl font-light mb-2" style={{ fontFamily: 'var(--font-cormorant)', color: 'rgba(255,255,255,0.25)' }}>
                 Nenhum convidado encontrado
+              </p>
+              <p className="text-[0.58rem] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.15)', fontFamily: 'var(--font-montserrat)' }}>
+                Tente outro filtro ou busca
               </p>
             </div>
           ) : (
-            <div className="flex flex-col gap-2 p-3">
+            <div className="flex flex-col gap-1.5 p-3">
               {listItems.map((item) => {
                 if (item.kind === 'companion') {
                   return (
@@ -884,8 +920,8 @@ function Dashboard({ guests }: { guests: Guest[] }) {
         </div>
 
         <p
-          className="text-center text-[0.46rem] tracking-[0.3em] uppercase pb-4"
-          style={{ color: 'rgba(200,146,74,0.3)', fontFamily: 'var(--font-montserrat)' }}
+          className="text-center text-[0.46rem] tracking-[0.3em] uppercase pt-2"
+          style={{ color: 'rgba(200,146,74,0.25)', fontFamily: 'var(--font-montserrat)' }}
         >
           Feito com ♥ para Natacha & Mauricio · 01.08.2026
         </p>
