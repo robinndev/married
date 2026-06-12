@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { subscribeToGuests, confirmGuest, unconfirmGuest, unconfirmGroup, updateGuestInfo } from '@/lib/firestore'
+import { subscribeToGuests, confirmGuest, unconfirmGuest, unconfirmGroup, updateGuestInfo, addGuest, deleteGuest } from '@/lib/firestore'
 import type { Guest } from '@/types'
 
 const WEDDING_DATE = new Date('2026-08-01T13:00:00-03:00')
@@ -288,6 +288,196 @@ function EditModal({ guest, onClose, onSave }: { guest: Guest; onClose: () => vo
   )
 }
 
+// ── Add Guest Modal ───────────────────────────────────────
+const NUCLEUS_OPTIONS = [
+  'Noivo', 'Noiva', 'Familia Noivo', 'Familia Noiva',
+  'Amigos Noivo', 'Amigos Noiva', 'Criança menor de 7', 'Fotografo', 'Pastores',
+]
+
+interface GuestEntry { name: string; nucleus: string }
+
+function AddGuestModal({ onClose, onApply }: { onClose: () => void; onApply: (entries: GuestEntry[]) => Promise<void> }) {
+  const [entries, setEntries] = useState<GuestEntry[]>([{ name: '', nucleus: '' }])
+  const [loading, setLoading] = useState(false)
+
+  const updateEntry = (i: number, field: keyof GuestEntry, value: string) =>
+    setEntries((prev) => prev.map((e, idx) => (idx === i ? { ...e, [field]: value } : e)))
+
+  const removeEntry = (i: number) =>
+    setEntries((prev) => prev.filter((_, idx) => idx !== i))
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const valid = entries.filter((e) => e.name.trim())
+    if (!valid.length) return
+    setLoading(true)
+    await onApply(valid)
+    setLoading(false)
+    onClose()
+  }
+
+  const inputStyle: React.CSSProperties = {
+    background: 'rgba(255,255,255,0.06)',
+    border: '1px solid rgba(200,146,74,0.22)',
+    color: '#FBF2E8',
+    fontFamily: 'var(--font-montserrat)',
+    outline: 'none',
+    fontSize: '0.8rem',
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-start justify-center px-5 py-8 overflow-y-auto"
+      style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(10px)' }}
+      onClick={onClose}
+    >
+      <motion.form
+        initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+        onSubmit={submit}
+        className="w-full max-w-lg rounded-2xl flex flex-col gap-5 my-auto"
+        style={{ background: '#1A0E08', border: '1px solid rgba(200,146,74,0.25)', boxShadow: '0 32px 80px rgba(0,0,0,0.6)', padding: '2rem' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div>
+          <p className="text-[0.52rem] tracking-[0.4em] uppercase mb-1" style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}>
+            Painel dos noivos
+          </p>
+          <h3 className="text-2xl font-light text-white" style={{ fontFamily: 'var(--font-cormorant)' }}>
+            Adicionar convidados
+          </h3>
+        </div>
+
+        <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(200,146,74,0.2), transparent)' }} />
+
+        <div className="flex flex-col gap-3 max-h-[60vh] overflow-y-auto pr-1">
+          {entries.map((entry, i) => (
+            <div
+              key={i}
+              className="flex flex-col gap-2 rounded-xl p-4 relative"
+              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
+            >
+              {entries.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeEntry(i)}
+                  className="absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center text-xs transition-opacity hover:opacity-100"
+                  style={{ background: 'rgba(196,103,58,0.15)', color: '#E07850', border: '1px solid rgba(196,103,58,0.25)', opacity: 0.7 }}
+                >
+                  ×
+                </button>
+              )}
+              <p className="text-[0.5rem] tracking-[0.3em] uppercase" style={{ color: 'rgba(200,146,74,0.5)', fontFamily: 'var(--font-montserrat)' }}>
+                Convidado {i + 1}
+              </p>
+              <input
+                type="text"
+                value={entry.name}
+                onChange={(e) => updateEntry(i, 'name', e.target.value)}
+                placeholder="Nome completo"
+                required={i === 0}
+                className="w-full px-4 py-2.5 rounded-xl"
+                style={inputStyle}
+                onFocus={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.5)')}
+                onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(200,146,74,0.22)')}
+              />
+              <select
+                value={entry.nucleus}
+                onChange={(e) => updateEntry(i, 'nucleus', e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl"
+                style={{ ...inputStyle, cursor: 'pointer' }}
+              >
+                <option value="">Núcleo (opcional)</option>
+                {NUCLEUS_OPTIONS.map((n) => (
+                  <option key={n} value={n} style={{ background: '#1A0E08' }}>{nucleusLabel(n)}</option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setEntries((prev) => [...prev, { name: '', nucleus: '' }])}
+          className="flex items-center justify-center gap-2 w-full py-3 rounded-xl text-[0.6rem] tracking-[0.2em] uppercase transition-all hover:opacity-80"
+          style={{ border: '1px dashed rgba(200,146,74,0.3)', color: 'rgba(200,146,74,0.7)', fontFamily: 'var(--font-montserrat)' }}
+        >
+          <span style={{ fontSize: '1rem', lineHeight: 1 }}>+</span> Adicionar mais um
+        </button>
+
+        <div className="flex gap-3 pt-1">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl transition-opacity hover:opacity-70"
+            style={{ border: '1px solid rgba(200,146,74,0.2)', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={loading || !entries.some((e) => e.name.trim())}
+            className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl transition-all disabled:opacity-40"
+            style={{ background: 'linear-gradient(135deg, #C8924A, #C4673A)', color: '#FBF2E8', fontFamily: 'var(--font-montserrat)' }}
+          >
+            {loading ? '...' : `Aplicar${entries.filter((e) => e.name.trim()).length > 1 ? ` (${entries.filter((e) => e.name.trim()).length})` : ''}`}
+          </button>
+        </div>
+      </motion.form>
+    </motion.div>
+  )
+}
+
+// ── Delete Dialog ─────────────────────────────────────────
+function DeleteDialog({ guest, onConfirm, onCancel }: { guest: Guest; onConfirm: () => void; onCancel: () => void }) {
+  const hasCompanions = (guest.companions?.length ?? 0) > 0
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center px-5"
+      style={{ background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)' }}
+      onClick={onCancel}
+    >
+      <motion.div
+        initial={{ scale: 0.92, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.92, y: 20 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+        className="w-full max-w-xs rounded-2xl p-8 flex flex-col items-center gap-5 text-center"
+        style={{ background: '#1E100A', border: '1px solid rgba(196,103,58,0.35)', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(196,103,58,0.15)', border: '1px solid rgba(196,103,58,0.3)' }}>
+          <span style={{ fontSize: '1.3rem' }}>🗑</span>
+        </div>
+        <div>
+          <p className="text-white text-xl font-light mb-1.5" style={{ fontFamily: 'var(--font-cormorant)' }}>Excluir convidado?</p>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}>
+            {hasCompanions
+              ? `${guest.name} e ${guest.companions!.length} acompanhante(s) serão removidos permanentemente.`
+              : `${guest.name} será removido permanentemente da lista.`}
+          </p>
+        </div>
+        <div className="flex gap-3 w-full">
+          <button
+            onClick={onCancel}
+            className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl transition-opacity hover:opacity-70"
+            style={{ border: '1px solid rgba(200,146,74,0.2)', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-montserrat)' }}
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={onConfirm}
+            className="flex-1 py-3 text-[0.6rem] tracking-[0.2em] uppercase rounded-xl"
+            style={{ background: 'rgba(196,103,58,0.25)', color: '#E07850', border: '1px solid rgba(196,103,58,0.4)', fontFamily: 'var(--font-montserrat)' }}
+          >
+            Excluir
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
 // ── Confirm Dialog ────────────────────────────────────────
 function ConfirmDialog({ guest, onConfirm, onCancel }: { guest: Guest; onConfirm: () => void; onCancel: () => void }) {
   const hasGroup = (guest.companions?.length ?? 0) > 0
@@ -340,13 +530,14 @@ interface GuestCardProps {
   onEdit: () => void
   onUnconfirm: () => void
   onConfirm: () => void
+  onDelete: () => void
   actionLoading: boolean
   leaderName?: string
 }
 
 function GuestCard({
   guest, companions, expanded, onToggleExpand,
-  onEdit, onUnconfirm, onConfirm, actionLoading, leaderName,
+  onEdit, onUnconfirm, onConfirm, onDelete, actionLoading, leaderName,
 }: GuestCardProps) {
   const hasCompanions = companions.length > 0
   const isCompanion = leaderName !== undefined
@@ -498,6 +689,23 @@ function GuestCard({
               </button>
             )}
 
+            <button
+              onClick={onDelete}
+              disabled={actionLoading}
+              title="Excluir permanentemente"
+              className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:opacity-80 disabled:opacity-30"
+              style={{
+                cursor: 'pointer',
+                background: 'rgba(196,103,58,0.08)',
+                color: 'rgba(196,103,58,0.6)',
+                border: '1px solid rgba(196,103,58,0.18)',
+                fontSize: '0.75rem',
+                flexShrink: 0,
+              }}
+            >
+              🗑
+            </button>
+
             {hasCompanions && (
               <div
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
@@ -612,6 +820,8 @@ function Dashboard({ guests }: { guests: Guest[] }) {
   const [filter, setFilter] = useState<'all' | 'confirmed' | 'pending'>('all')
   const [editing, setEditing] = useState<Guest | null>(null)
   const [unconfirming, setUnconfirming] = useState<Guest | null>(null)
+  const [deleting, setDeleting] = useState<Guest | null>(null)
+  const [adding, setAdding] = useState(false)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [expanded, setExpanded] = useState<Set<string>>(new Set())
   const countdown = useCountdown()
@@ -695,6 +905,20 @@ function Dashboard({ guests }: { guests: Guest[] }) {
   const handleEdit = async (data: { phone: string; totalGuests: number }) => {
     if (!editing) return
     await updateGuestInfo(editing.id, data)
+  }
+
+  const handleDelete = async (guest: Guest) => {
+    setActionLoading(guest.id)
+    try {
+      await deleteGuest(guest.id, guest.companions ?? [])
+    } finally {
+      setActionLoading(null)
+      setDeleting(null)
+    }
+  }
+
+  const handleAddGuests = async (entries: GuestEntry[]) => {
+    await Promise.all(entries.map((e) => addGuest({ name: e.name, nucleus: e.nucleus || undefined })))
   }
 
   return (
@@ -827,7 +1051,20 @@ function Dashboard({ guests }: { guests: Guest[] }) {
             className="px-4 py-3.5 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
           >
-            <div className="flex gap-1.5 flex-wrap">
+            <div className="flex gap-1.5 flex-wrap items-center">
+              <button
+                onClick={() => setAdding(true)}
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[0.52rem] tracking-[0.16em] uppercase transition-all hover:opacity-80"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(200,146,74,0.2), rgba(196,103,58,0.2))',
+                  color: '#E0AD6A',
+                  border: '1px solid rgba(200,146,74,0.35)',
+                  fontFamily: 'var(--font-montserrat)',
+                }}
+              >
+                <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>+</span> Adicionar
+              </button>
+              <div className="w-px h-4 mx-1" style={{ background: 'rgba(255,255,255,0.1)' }} />
               {(['all', 'confirmed', 'pending'] as const).map((f) => (
                 <button
                   key={f}
@@ -896,6 +1133,7 @@ function Dashboard({ guests }: { guests: Guest[] }) {
                       onEdit={() => {}}
                       onUnconfirm={() => {}}
                       onConfirm={() => {}}
+                      onDelete={() => setDeleting(item.guest)}
                       actionLoading={false}
                       leaderName={item.leaderName}
                     />
@@ -911,6 +1149,7 @@ function Dashboard({ guests }: { guests: Guest[] }) {
                     onEdit={() => setEditing(item.guest)}
                     onUnconfirm={() => setUnconfirming(item.guest)}
                     onConfirm={() => handleConfirm(item.guest)}
+                    onDelete={() => setDeleting(item.guest)}
                     actionLoading={actionLoading === item.guest.id}
                   />
                 )
@@ -934,6 +1173,19 @@ function Dashboard({ guests }: { guests: Guest[] }) {
             guest={unconfirming}
             onConfirm={() => handleUnconfirm(unconfirming)}
             onCancel={() => setUnconfirming(null)}
+          />
+        )}
+        {deleting && (
+          <DeleteDialog
+            guest={deleting}
+            onConfirm={() => handleDelete(deleting)}
+            onCancel={() => setDeleting(null)}
+          />
+        )}
+        {adding && (
+          <AddGuestModal
+            onClose={() => setAdding(false)}
+            onApply={handleAddGuests}
           />
         )}
       </AnimatePresence>

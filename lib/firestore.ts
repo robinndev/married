@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   deleteField,
   query,
   orderBy,
@@ -142,6 +143,26 @@ export async function updateGuestInfo(
 ) {
   const ref = doc(db, 'guests', guestId)
   await updateDoc(ref, data)
+}
+
+export async function addGuest(data: { name: string; nucleus?: string }) {
+  return addDoc(collection(db, 'guests'), {
+    name: data.name.trim(),
+    ...(data.nucleus ? { nucleus: data.nucleus } : {}),
+    invitedAt: new Date().toISOString(),
+    confirmed: false,
+  })
+}
+
+export async function deleteGuest(guestId: string, companionIds?: string[]) {
+  const batch = writeBatch(db)
+  batch.delete(doc(db, 'guests', guestId))
+  if (companionIds?.length) {
+    for (const cId of companionIds) {
+      batch.delete(doc(db, 'guests', cId))
+    }
+  }
+  await batch.commit()
 }
 
 // ── Gift analytics ────────────────────────────────────────
