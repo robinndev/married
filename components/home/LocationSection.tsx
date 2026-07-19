@@ -1,6 +1,12 @@
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import SectionTitle from '@/components/ui/SectionTitle'
-import { GOOGLE_MAPS_URL, WEDDING_LOCATION } from '@/constants'
+import {
+  GOOGLE_MAPS_URL,
+  PONTO_7_MAPS_URL,
+  REFERENCE_POINT,
+  WEDDING_ADDRESS,
+  WEDDING_LOCATION,
+} from '@/constants'
 
 export default function LocationSection() {
   return (
@@ -51,10 +57,12 @@ export default function LocationSection() {
                 {[
                   { icon: '📅', text: '01 de agosto de 2026' },
                   { icon: '🕒', text: '15:00 Horas — cerimônia ao pôr do sol' },
-                  { icon: '📍', text: 'Mairiporã, São Paulo' },
+                  { icon: '📍', text: `${WEDDING_ADDRESS.street} — ${WEDDING_ADDRESS.neighborhood}` },
+                  { icon: '🏙️', text: `${WEDDING_ADDRESS.city} · CEP ${WEDDING_ADDRESS.cep}` },
+                  { icon: '🧭', text: WEDDING_ADDRESS.coordinates },
                 ].map(({ icon, text }) => (
-                  <div key={text} className="flex items-center gap-3">
-                    <span className="text-lg">{icon}</span>
+                  <div key={text} className="flex items-start gap-3">
+                    <span className="text-lg leading-6">{icon}</span>
                     <span
                       className="text-sm"
                       style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50' }}
@@ -64,6 +72,68 @@ export default function LocationSection() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Directions guide */}
+            <div
+              className="rounded-2xl p-6"
+              style={{
+                background: 'rgba(251,242,232,0.7)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(200,146,74,0.22)',
+                boxShadow: '0 8px 32px rgba(26,16,10,0.07)',
+              }}
+            >
+              <p
+                className="text-[0.6rem] tracking-[0.38em] uppercase mb-3"
+                style={{ color: '#C8924A', fontFamily: 'var(--font-montserrat)' }}
+              >
+                Ajuste o endereço 📍
+              </p>
+              <p
+                className="text-sm mb-4"
+                style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50', lineHeight: 1.7 }}
+              >
+                🚫 <strong>Não</strong> coloque o Kasaqui no Waze/Google Maps logo no início da viagem — alguns trajetos indicam atalhos com pouco sinal e/ou estrada de terra.
+              </p>
+              <ol
+                className="text-sm flex flex-col gap-2 list-decimal pl-5"
+                style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50', lineHeight: 1.7 }}
+              >
+                <li>
+                  Primeiro, trace rota até o{' '}
+                  <a
+                    href={PONTO_7_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#C4673A', textDecoration: 'underline' }}
+                  >
+                    Ponto 7 Auto Center
+                  </a>
+                  .
+                </li>
+                <li>
+                  Ao chegar no Ponto 7, coloque a rota para o{' '}
+                  <a
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#C4673A', textDecoration: 'underline' }}
+                  >
+                    Kasaqui Eventos
+                  </a>
+                  .
+                </li>
+                <li>
+                  Suba pela <strong>Estrada da Roseira</strong> (também chamada Avenida Vereador Belarmino Pereira de Carvalho — é a mesma via).
+                </li>
+              </ol>
+              <p
+                className="text-xs mt-4"
+                style={{ fontFamily: 'var(--font-montserrat)', color: '#8A6A50' }}
+              >
+                📍 <strong>Ponto de referência:</strong> {REFERENCE_POINT}.
+              </p>
             </div>
 
             <a
@@ -79,7 +149,7 @@ export default function LocationSection() {
               }}
             >
               <span>📍</span>
-              Como Chegar
+              Abrir no Google Maps
             </a>
           </div>
 
@@ -93,7 +163,7 @@ export default function LocationSection() {
             }}
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d117944.33!2d-46.6!3d-23.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf11b5c3b8e2e7%3A0x2d76a95f82acf4cd!2sMairiporã%2C%20SP!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+              src="https://www.google.com/maps?q=-23.327639,-46.599111&z=16&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0, filter: 'sepia(18%) saturate(80%) hue-rotate(15deg)' }}
